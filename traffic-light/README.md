@@ -16,7 +16,8 @@ const TrafficLightMachine = Machine({
       id: "4270a101",
       initial: "unlit",
       on: {
-        BREAK: "broken"
+        BREAK: "broken",
+        RESET: "normal.lit"
       },
       states: {
         unlit: {
@@ -35,19 +36,29 @@ const TrafficLightMachine = Machine({
             green: {
               id: "1ecaaa9d",
               on: {
-                TIMER: "yellow"
+                TIMER: {
+                  target: "yellow",
+                  // Additional guard condition required
+                  cond: (_context, event) => event.elapsed >= 3 ? true : false
+                }
               }
             },
             yellow: {
               id: "e7da3afc",
               on: {
-                TIMER: "red"
+                TIMER: {
+                  target: "red", 
+                  cond: (_context, event) => event.elapsed >= 5 ? true : false
+                }
               }
             },
             red: {
               id: "4d4c91d2",
               on: {
-                TIMER: "green"
+                TIMER: {
+                  target: "green",
+                  cond: (_context, event) => event.elapsed >= 10 ? true : false
+                }
               }
             }
           }
