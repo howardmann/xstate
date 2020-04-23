@@ -31,7 +31,7 @@ const TrafficLightMachine = Machine({
                 TIMER: {
                   target: "yellow",
                   // Additional guard condition required
-                  cond: (_context, event) => event.elapsed >= 3 ? true : false
+                  cond: (_context, event) => event.elapsed >= 4 ? true : false
                 }
               }
             },
