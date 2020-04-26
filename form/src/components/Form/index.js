@@ -45,14 +45,16 @@ class Form extends React.Component {
   }
 
   validateInput = () => {
+    this.resetError()
+
     let {name, age} = this.state.input
     // Validate input and update error state if error
     let {error} = validateInput({name, age})
-
     if (error) {
-      let {nameError = null, ageError = null} = error      
+      let {nameError = null, ageError} = error
       this.setState({error: {...this.state.error,
-        nameError, ageError
+        nameError: nameError || null, 
+        ageError: ageError || null
       }})
       return false
     }
@@ -72,7 +74,7 @@ class Form extends React.Component {
     await wait(1000)
 
     // Validate input and update error state if error
-    let validate = this.validateInput()
+    let validate = await this.validateInput()
     if (!validate) {
       return send('REJECT')
     }
