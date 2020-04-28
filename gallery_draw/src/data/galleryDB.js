@@ -1,15 +1,7 @@
-// NOTE LEFT HERE FOR INFORMATION ONLY FOR REDUCER EXAMPLE
-// REFACTORED TO USE STATE MACHINE
-
-let initialState = {
-  filter : {
-    categoryId: 1,
-    imagePos: 0
-  },
-  categories: [
-    {
-     id: 1,
-     name: 'ANIMALS'
+const galleryDB = {
+  categories: [{
+      id: 1,
+      name: 'ANIMALS'
     },
     {
       id: 2,
@@ -20,8 +12,7 @@ let initialState = {
       name: 'SCARY'
     }
   ],
-  images: [
-    {
+  images: [{
       id: 1,
       categoryId: 1,
       meta: 'Sven',
@@ -96,37 +87,4 @@ let initialState = {
   ]
 }
 
-const GalleryReducer = (state = initialState, action) => {
-  if (action.type === 'UPDATE_CATEGORY') {
-    let categoryId = action.categoryId
-    return {...state, filter: {categoryId, imagePos: 0}}
-  }
-
-  if (action.type === 'NEXT_IMAGE') {
-    let {categoryId, imagePos} = state.filter    
-    let filterImages = state.images.filter(el => el.categoryId === categoryId)
-    let maxPos = filterImages.length - 1
-    let nextImagePos = Math.min(maxPos, imagePos + 1)
-    return {...state, filter: {...state.filter, imagePos: nextImagePos}}
-  }
-
-  if (action.type === 'PREV_IMAGE') {
-    let {categoryId, imagePos} = state.filter    
-    let filterImages = state.images.filter(el => el.categoryId === categoryId)
-    let maxPos = filterImages.length - 1
-    let prevImagePos = Math.min(Math.max(0, imagePos - 1),maxPos)
-    return {...state, filter: {...state.filter, imagePos: prevImagePos}}
-  }
-
-
-  return state
-}
-
-// let x = GalleryReducer(undefined, {type: 'UPDATE_CATEGORY', categoryId: 2})
-// console.log(x);
-// let y = GalleryReducer(undefined, {type: 'NEXT_IMAGE'})
-// console.log(y);
-// let z = GalleryReducer(undefined, {type: 'PREV_IMAGE'})
-// console.log(z);
-
-export default GalleryReducer
+module.exports = galleryDB

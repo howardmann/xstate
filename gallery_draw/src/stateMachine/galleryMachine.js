@@ -1,17 +1,5 @@
-# XState Form
+let {Machine, interpret, assign} = require('xstate')
 
-Demo link:
-http://xstategallery.surge.sh/
-
-Form UI
-![form-ui](formui.png)
-
-XState Chart
-![xstate-gallery](xstategallery.png)
-
-
-XState Machine
-```javascript
 const increment = assign({
   idx: ctx => ctx.idx + 1
 });
@@ -76,4 +64,21 @@ const GalleryMachine = Machine({
   }
 });
 
-```
+module.exports = GalleryMachine
+// const myGalleryMachine = GalleryMachine.withContext({
+//   idx: 0,
+//   min: 0,
+//   max: 5,
+//   categoryId: 'SCARY'
+// })
+
+// const GalleryService = interpret(myGalleryMachine).onTransition(state => {
+//   console.log(state.value, state.context);
+// }).start()
+
+// const current = GalleryService.initialState
+// GalleryService.send('NEXT')
+// GalleryService.send('RESOLVE')
+// GalleryService.send('NEXT')
+
+

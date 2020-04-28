@@ -1,71 +1,105 @@
 import React from 'react';
-import reducer from './reducer/GalleryReducer'
-import {getImage, hasPrevPos, hasNextPos} from './util/gallery'
+import {interpret} from 'xstate'
+import galleryDB from './data/galleryDB'
+import GalleryMachine from './stateMachine/galleryMachine'
 
-let Category = (props) => (
-  <span>
-    <button onClick={() => {props.handleUpdateCategory(props.id)}}>{props.name} | {props.id}</button>
-  </span>
-)
+// get images and categories array (image belongs to a category)
+const {images, categories} = galleryDB
+const categoryId = categories[0].id // first id
+// max index position of category array
+const maxImagePos = images.filter(el => el.categoryId === categoryId).length - 1
 
-class Gallery extends React.Component {
+// Set the initial context for the gallery machine based on above paramaters
+const initialContext = {
+  idx: 0,
+  min: 0,
+  max: maxImagePos,
+  categoryId: categoryId
+}
+// When building custom context need instantiate new machine
+const myGalleryMachine = GalleryMachine.withContext(initialContext)
+
+// Simple async timeout function to simulate async
+let wait = function (ms) {return new Promise(resolve => setTimeout(resolve, ms))}
+
+
+class Gallery extends React.Component {  
   state = {
-    // current: TrafficLightMachine.initialState,
-    current: 'boom',
-    reducer: reducer(undefined, {})
+    current: myGalleryMachine.withContext(initialContext).initialState,
+    images,
+    categories
   }
-  async dispatch(action){
-    let newState = reducer(this.state.reducer, action)
-    await this.setState({reducer: newState})
+  // boilerplate
+  service = interpret(myGalleryMachine).onTransition(current => 
+    this.setState({current})
+  )
+  componentDidMount(){
+    this.service.start()
   }
-  handleNext = () => {
-    console.log('boom');
-    this.dispatch({type: 'NEXT_IMAGE'})
+  componentWillUnmount(){
+    this.service.stop()
   }
-  handlePrev = () => {
-    this.dispatch({type: 'PREV_IMAGE'})
+  // simple helper to find image object based on categoryId and index position
+  getImage = () => {
+    let {current, images} = this.state
+    let imagePos = current.context.idx
+    let categoryId = current.context.categoryId
+    let filterImages = images.filter(el => el.categoryId === categoryId)
+    return filterImages[imagePos]
   }
-  handleUpdateCategory = (categoryId) => {
-    this.dispatch({type: 'UPDATE_CATEGORY', categoryId: +categoryId})
+  // XState actions simulate async with resolve
+  handleUpdateCategory = async (id) => {
+    this.service.send('UPDATE_CATEGORY', {categoryId: id})
+    await wait(1000)
+    this.service.send('RESOLVE')
   }
-
-
-  // service = interpret(TrafficLightMachine).onTransition(current => 
-  //   this.setState({current})
-  // )
-
-  // componentDidMount(){
-  //   this.service.start()
-  // }
-
-  // componentWillUnmount(){
-  //   this.service.stop()
-  // }
-
+  handleNext = async () => {
+    this.service.send('NEXT')
+    await wait(300)
+    this.service.send('RESOLVE')
+  }
+  handlePrev = async () => {
+    this.service.send('PREV')
+    await wait (300)
+    this.service.send('RESOLVE')
+  }
   
   render() {
-    let {images, categories} = this.state.reducer
-    let {categoryId, imagePos} = this.state.reducer.filter
-    let image = getImage(images, {categoryId, imagePos})
-    let hasPrev = hasPrevPos(imagePos)
-    let hasNext = hasNextPos(images, {categoryId, imagePos})
+    let {current} = this.state
+    let image = this.getImage()
+    // Simple predicate function to determine if at min or max
+    let hasPrev = current.context.idx > 0 ? true : false
+    let hasNext = current.context.idx < current.context.max ? true : false
 
     return (
       <div>
+        <p>current: {JSON.stringify(current.value)}</p>
+        <p>context: {JSON.stringify(current.context)}</p>
+
         {categories.map(el => (
-          <Category handleUpdateCategory={this.handleUpdateCategory} name={el.name} id={el.id}/>
+            <span>
+              <button onClick={() => {this.handleUpdateCategory(el.id)}}>{el.name} | {el.id}</button>
+            </span>
         ))}
+
         <p>{image.meta}</p>
-        <p>
-          {hasPrev && <button onClick={() => this.handlePrev()}>PREV_IMAGE</button>} 
-          {hasNext && <button onClick={() => this.handleNext()}>NEXT_IMAGE</button>}
-        </p>
-        
-        <img width="50%" src={image.imageURL} alt={image.meta}/>
-        
+        {hasPrev && 
+          <button disabled={current.matches('category.loading')} onClick={() => this.handlePrev()}>PREV</button>
+        }
+
+        {hasNext && 
+          <button disabled={current.matches('category.loading')} onClick={() => this.handleNext()}>NEXT</button>
+        }
         <br/>
         
-        {JSON.stringify(this.state.reducer)}
+        {current.matches('category.loading') && <
+          p>...loading</p>
+        }
+        
+        {current.matches('category.image') && 
+          <img width="50%" src={image.imageURL} alt={image.meta}/>
+        }
+        <br/>        
       </div>
     );
   }
