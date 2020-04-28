@@ -5,14 +5,14 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>Gallery</h1>
+        <h3>XState Gallery</h3>
         <div className="row">
           <div className="col col-6 center">
-            <h2>Drawer 1</h2>
+            <h4>Drawer 1</h4>
             <Gallery/>
           </div>
           <div className="col col-6 center">
-            <h2>Drawer 2</h2>
+            <h4>Drawer 2</h4>
             <Gallery/>
           </div>          
         </div>

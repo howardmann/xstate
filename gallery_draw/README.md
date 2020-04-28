@@ -4,7 +4,7 @@ Demo link:
 http://xstategallery.surge.sh/
 
 Form UI
-![form-ui](formui.png)
+![gallery-ui](galleryui.png)
 
 XState Chart
 ![xstate-gallery](xstategallery.png)

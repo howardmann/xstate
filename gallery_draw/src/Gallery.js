@@ -66,10 +66,14 @@ class Gallery extends React.Component {
   
   render() {
     let {current} = this.state
+    let {idx, min, max} = current.context
     let image = this.getImage()
     // Simple predicate function to determine if at min or max
-    let hasPrev = current.context.idx > 0 ? true : false
-    let hasNext = current.context.idx < current.context.max ? true : false
+    let hasPrev = idx > 0 ? true : false
+    let hasNext = idx < max ? true : false
+    let isMin = idx === min
+    let isMax = idx === max
+    let isMid = (idx < max) && (idx > min)
 
     return (
       <div>
@@ -78,9 +82,17 @@ class Gallery extends React.Component {
 
         {categories.map(el => (
             <span>
-              <button onClick={() => {this.handleUpdateCategory(el.id)}}>{el.name} | {el.id}</button>
+              <button 
+                style={{backgroundColor: current.context.categoryId === el.id ? 'gainsboro' : 'white'}}
+                onClick={() => {this.handleUpdateCategory(el.id)}}>{el.name} | {el.id}</button>
             </span>
         ))}
+
+        {/* Carousel circle icons */}
+        {isMin && <p>&#9679; &#9675; &#9675;</p>}
+        {isMax && <p>&#9675; &#9675; &#9679;</p>}
+        {isMid && <p>&#9675; &#9679; &#9675;</p>}
+
 
         <p>{image.meta}</p>
         {hasPrev && 
@@ -92,9 +104,7 @@ class Gallery extends React.Component {
         }
         <br/>
         
-        {current.matches('category.loading') && <
-          p>...loading</p>
-        }
+        {current.matches('category.loading') && <p>...loading</p>}
         
         {current.matches('category.image') && 
           <img width="50%" src={image.imageURL} alt={image.meta}/>
