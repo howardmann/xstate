@@ -4,6 +4,7 @@ Demo link:
 http://xstatetrafficlight.surge.sh/
 
 XState Chart
+https://xstate.js.org/viz/?gist=1b9e1bcf75b1fed19190adc9f39b895e
 ![traffic-light](trafficlight.png)
 
 
@@ -13,7 +14,6 @@ const TrafficLightMachine = Machine({
   initial: "normal",
   states: {
     normal: {
-      id: "4270a101",
       initial: "unlit",
       on: {
         BREAK: "broken",
@@ -21,20 +21,17 @@ const TrafficLightMachine = Machine({
       },
       states: {
         unlit: {
-          id: "2a412589",
           on: {
             TURN_ON: "lit"
           }
         },
         lit: {
-          id: "89246514",
           initial: "green",
           on: {
             TURN_OFF: "unlit"
           },
           states: {
             green: {
-              id: "1ecaaa9d",
               on: {
                 TIMER: {
                   target: "yellow",
@@ -44,7 +41,6 @@ const TrafficLightMachine = Machine({
               }
             },
             yellow: {
-              id: "e7da3afc",
               on: {
                 TIMER: {
                   target: "red", 
@@ -53,7 +49,6 @@ const TrafficLightMachine = Machine({
               }
             },
             red: {
-              id: "4d4c91d2",
               on: {
                 TIMER: {
                   target: "green",
@@ -66,7 +61,6 @@ const TrafficLightMachine = Machine({
       }
     },
     broken: {
-      id: "87c05516",
       on: {
         REPAIR: "normal"
       }
