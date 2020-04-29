@@ -26,7 +26,7 @@ const GalleryMachine = Machine({
   },
   states: {
     category: {
-      initial: 'image',
+      initial: 'loading',
       states: {
         image: {
           on: {
@@ -50,7 +50,16 @@ const GalleryMachine = Machine({
         },
         error: {
           on: {
-            RETRY: 'loading'
+            NEXT: {
+              target: 'loading',
+              actions: increment,
+              cond: ctx => ctx.idx < ctx.max
+            },
+            PREV: {
+              target: 'loading',
+              actions: decrement,
+              cond: ctx => ctx.idx > ctx.min
+            }
           }
         }
       },

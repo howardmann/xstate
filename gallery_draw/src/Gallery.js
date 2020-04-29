@@ -19,10 +19,6 @@ const initialContext = {
 // When building custom context need instantiate new machine
 const myGalleryMachine = GalleryMachine.withContext(initialContext)
 
-// Simple async timeout function to simulate async
-let wait = function (ms) {return new Promise(resolve => setTimeout(resolve, ms))}
-
-
 class Gallery extends React.Component {  
   state = {
     current: myGalleryMachine.withContext(initialContext).initialState,
@@ -47,25 +43,10 @@ class Gallery extends React.Component {
     let filterImages = images.filter(el => el.categoryId === categoryId)
     return filterImages[imagePos]
   }
-  // XState actions simulate async with resolve
-  handleUpdateCategory = async (id) => {
-    this.service.send('UPDATE_CATEGORY', {categoryId: id})
-    await wait(1000)
-    this.service.send('RESOLVE')
-  }
-  handleNext = async () => {
-    this.service.send('NEXT')
-    await wait(300)
-    this.service.send('RESOLVE')
-  }
-  handlePrev = async () => {
-    this.service.send('PREV')
-    await wait (300)
-    this.service.send('RESOLVE')
-  }
   
   render() {
-    let {current} = this.state
+    let {current, images, categories} = this.state
+    let {send} = this.service
     let {idx, min, max} = current.context
     let image = this.getImage()
     // Simple predicate function to determine if at min or max
@@ -74,6 +55,7 @@ class Gallery extends React.Component {
     let isMin = idx === min
     let isMax = idx === max
     let isMid = (idx < max) && (idx > min)
+    let getMaxImagePos = (categoryId) =>  images.filter(el => el.categoryId === categoryId).length - 1
 
     return (
       <div>
@@ -84,7 +66,7 @@ class Gallery extends React.Component {
             <span>
               <button 
                 style={{backgroundColor: current.context.categoryId === el.id ? 'gainsboro' : 'white'}}
-                onClick={() => {this.handleUpdateCategory(el.id)}}>{el.name} | {el.id}</button>
+                onClick={() => send('UPDATE_CATEGORY', { categoryId: el.id, max: getMaxImagePos(el.id) })}>{el.name} | {el.id}</button>
             </span>
         ))}
 
@@ -96,19 +78,25 @@ class Gallery extends React.Component {
 
         <p>{image.meta}</p>
         {hasPrev && 
-          <button disabled={current.matches('category.loading')} onClick={() => this.handlePrev()}>PREV</button>
+          <button disabled={current.matches('category.loading')} onClick={() => send('PREV')}>PREV</button>
         }
 
         {hasNext && 
-          <button disabled={current.matches('category.loading')} onClick={() => this.handleNext()}>NEXT</button>
+          <button disabled={current.matches('category.loading')} onClick={() => send('NEXT')}>NEXT</button>
         }
         <br/>
         
-        {current.matches('category.loading') && <p>...loading</p>}
+        {current.matches('category.loading') && <p>⏳</p>}
+        {current.matches('category.error') && <p> ❌ </p>}
         
-        {current.matches('category.image') && 
-          <img width="50%" src={image.imageURL} alt={image.meta}/>
-        }
+        <img width="50%"
+          style={current.matches('category.loading') || current.matches('category.error') ? {display: 'none'} : {}}
+          src={image.imageURL} 
+          onLoad={() => send('RESOLVE')}
+          onError={() => send('REJECT')}
+          alt={image.meta}
+        />
+
         <br/>        
       </div>
     );
