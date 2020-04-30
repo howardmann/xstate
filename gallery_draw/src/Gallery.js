@@ -1,54 +1,60 @@
 import React from 'react';
 import {interpret} from 'xstate'
-import galleryDB from './data/galleryDB'
+// import galleryDB from './data/galleryDB'
+import galleryDb from './data-access/gallery-db'
 import GalleryMachine from './stateMachine/galleryMachine'
 
-// get images and categories array (image belongs to a category)
-const {images, categories} = galleryDB
-const categoryId = categories[0].id // first id
-// max index position of category array
-const maxImagePos = images.filter(el => el.categoryId === categoryId).length - 1
+let loadInitialState = async () =>{
+  let {listCategories, listImages} = galleryDb
 
-// Set the initial context for the gallery machine based on above paramaters
-const initialContext = {
-  idx: 0,
-  min: 0,
-  max: maxImagePos,
-  categoryId: categoryId
+  let categories = await listCategories()
+  let images = await listImages()
+
+  let categoryId = categories[0].id // first id
+  let maxImagePos = images.filter(el => el.categoryId === categoryId).length - 1
+
+  // Update context
+  const initialContext = {
+    idx: 0,
+    min: 0,
+    max: maxImagePos,
+    categoryId: categoryId
+  }
+  return {
+    myGalleryMachine: GalleryMachine.withContext(initialContext),
+    images,
+    categories    
+  }
 }
-// When building custom context need instantiate new machine
-const myGalleryMachine = GalleryMachine.withContext(initialContext)
+
 
 class Gallery extends React.Component {  
   state = {
-    current: myGalleryMachine.withContext(initialContext).initialState,
-    images,
-    categories
+    current: GalleryMachine.initialState,
+    images: [],
+    categories: []
   }
   // boilerplate
-  service = interpret(myGalleryMachine).onTransition(current => 
+  service = interpret(GalleryMachine).onTransition(current => 
     this.setState({current})
   )
-  componentDidMount(){
+
+  componentDidMount = async () => {
+    const {images, categories, myGalleryMachine} = await loadInitialState()    
+    this.setState({categories, images, current: myGalleryMachine.initialState})
+
+    // update service boilerplate with machine with custom context
+    this.service = interpret(myGalleryMachine).onTransition(current =>this.setState({current}))    
     this.service.start()
   }
   componentWillUnmount(){
     this.service.stop()
   }
-  // simple helper to find image object based on categoryId and index position
-  getImage = () => {
-    let {current, images} = this.state
-    let imagePos = current.context.idx
-    let categoryId = current.context.categoryId
-    let filterImages = images.filter(el => el.categoryId === categoryId)
-    return filterImages[imagePos]
-  }
   
   render() {
     let {current, images, categories} = this.state
     let {send} = this.service
-    let {idx, min, max} = current.context
-    let image = this.getImage()
+    let {idx, min, max, categoryId} = current.context
     // Simple predicate function to determine if at min or max
     let hasPrev = idx > 0 ? true : false
     let hasNext = idx < max ? true : false
@@ -56,6 +62,15 @@ class Gallery extends React.Component {
     let isMax = idx === max
     let isMid = (idx < max) && (idx > min)
     let getMaxImagePos = (categoryId) =>  images.filter(el => el.categoryId === categoryId).length - 1
+
+    let getImage = ({images, idx, categoryId}) => {            
+      if (images.length > 0) {
+        return  images.filter(el => el.categoryId == categoryId)[idx]
+      }
+      return {}
+    }
+
+    let image = getImage({images, idx, categoryId})
 
     return (
       <div>
@@ -66,7 +81,7 @@ class Gallery extends React.Component {
             <span>
               <button 
                 style={{backgroundColor: current.context.categoryId === el.id ? 'gainsboro' : 'white'}}
-                onClick={() => send('UPDATE_CATEGORY', { categoryId: el.id, max: getMaxImagePos(el.id) })}>{el.name} | {el.id}</button>
+                onClick={() => send('UPDATE_CATEGORY', { categoryId: el.id, max: getMaxImagePos(el.id) })}>{el.name}</button>
             </span>
         ))}
 
