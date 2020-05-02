@@ -1,4 +1,4 @@
-let GALLERIES = require('../../galleryDB')
+let GALLERIES = require('./galleryDB')
 
 
 let listCategories = () => {
