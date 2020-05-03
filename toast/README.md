@@ -3,8 +3,10 @@
 Demo link:
 http://xstatetoast.surge.sh/
 
+UI:
+![lightui](lightui.png)
 
-XState Form:
+XState Light:
 https://xstate.js.org/viz/?gist=bd97506b065d04c16d2c24727ebfd150
 ![xstate-light](light.png)
 
