@@ -1,23 +1,7 @@
 import React from 'react'
 import {useMachine} from '@xstate/react'
 import feedbackMachine from '../stateMachine/feedbackMachine'
-import './ratingStyle.css';
-
-const Rating = (props) => {
-  let {handlePositive, handleNeutral, handleNegative} = props
-
-  return (
-    <div style={{border: '1px solid green'}}>
-      <p>Rate Your Experience</p>
-      <div className="rating">
-          <span data-src="4" onClick={handlePositive}>☆</span>
-          <span data-src="3" onClick={handleNeutral}>☆</span>
-          <span data-src="2" onClick={handleNeutral}>☆</span>
-          <span data-src="1" onClick={handleNegative}>☆</span>
-      </div> 
-    </div>
-  )
-}
+import StarRatingComponent from 'react-star-rating-component';
 
 const CategoryButton = (props) => {
   let {handleUpdateCategory, category, context} = props
@@ -30,11 +14,20 @@ const CategoryButton = (props) => {
     </button>
   )
 }
+
 const Feedback = () => {
   const [current, send] = useMachine(feedbackMachine)
-  const handlePositive = () => send('POSITIVE')
-  const handleNeutral = () => send('NEUTRAL')
-  const handleNegative = () => send('NEGATIVE')
+  const [stars, setStars] = React.useState(0)
+
+  const onStarClick = (stars) => {
+    setStars(stars)
+    if (stars === 4) { send('POSITIVE')}
+    if (stars === 3) { send('NEUTRAL')}
+    if (stars === 2) { send('NEUTRAL')}
+    if (stars === 1) { send('NEGATIVE')}    
+  }
+
+  // XSTATE SEND HANDLERS
   const handleUpdateCategory = (category) => send('SELECT_CATEGORY', {category})
 
   return (
@@ -43,14 +36,24 @@ const Feedback = () => {
       // FEEDBACK FORM
         <div>
         <h2>Feedback Form</h2>
+          {/* METADATA */}
           <div style={{background: 'gainsboro'}}>
             <small>value: {JSON.stringify(current.value)}</small>
             <small>context: {JSON.stringify(current.context)}</small>
+            <small>stars: {JSON.stringify(stars)}</small>
           </div>
 
+          {/* REACT STAR RATING COMPONENT */}
           {!current.matches('rating.success') &&
-            <Rating handlePositive={handlePositive} handleNeutral={handleNeutral} handleNegative={handleNegative}/>
+            <StarRatingComponent 
+              name='Rating'
+              value={stars}
+              starCount={4}
+              onStarClick={onStarClick}
+            />
           }
+
+          {/* POSITIVE FEEDBACK RESPONSE */}
           {(current.matches('rating.feedback.response') && (current.context.rating === 'positive')) &&
             <div>
               <p>Thank you, what went well?</p>
@@ -65,6 +68,7 @@ const Feedback = () => {
             </div>
           }
 
+          {/* NEUTRAL FEEDBACK RESPONSE */}
           {(current.matches('rating.feedback.response') && (current.context.rating === 'neutral')) &&
             <div>
               <p>How can we improve?</p>
@@ -78,6 +82,7 @@ const Feedback = () => {
             </div>
           }
 
+          {/* FEEDBACK COMMENT */}
           {current.matches('rating.feedback.comment') && 
           <div>
             <p>Leave your comment</p>
@@ -87,6 +92,7 @@ const Feedback = () => {
           </div>
           }
 
+          {/* ESCALATE RESPONSE */}
           {current.matches('rating.escalate.response') &&
           <div>
             <p>Would you like us to call you back?</p>
@@ -96,6 +102,7 @@ const Feedback = () => {
           </div>
           }
 
+          {/* ESCALATE CONTACT */}
           {current.matches('rating.escalate.contact') &&
           <div>
             <p>Best contact details</p>
@@ -105,6 +112,7 @@ const Feedback = () => {
           </div>
           }
 
+          {/* ESCALATE SUCCESS */}
           {current.matches('rating.success') && 
             <div>
               <p>Thank you for your feedback!</p>            
