@@ -34,7 +34,8 @@ class Gallery extends React.Component {
   state = {
     current: GalleryMachine.initialState,
     images: [],
-    categories: []
+    categories: [],
+    reachedEnd: false
   }
   // boilerplate
   service = interpret(GalleryMachine).onTransition(current => 
@@ -73,24 +74,26 @@ class Gallery extends React.Component {
     }
 
     let image = getImage({images, idx, categoryId})
-
+    let {reachedEnd} = this.state
     return (
       <div>
 
         {hasPrev && 
-          <button disabled={current.matches('category.loading')} onClick={() => send('PREV')}>PREV</button>
+          <button disabled={current.matches('category.loading')} onClick={() => send('PREV')}>⬅️</button>
         }
 
         <span>{"      "}</span>
 
         {hasNext && 
-          <button disabled={current.matches('category.loading')} onClick={() => send('NEXT')}>NEXT</button>
+          <button disabled={current.matches('category.loading')} onClick={() => send('NEXT')}>➡️</button>
         }
+        <br/>
         <br/>
         
         {current.matches('category.loading') && <p>⏳</p>}
         {current.matches('category.error') && <p> ❌ </p>}
-        
+        <p>{JSON.stringify(current.context)}</p>
+
         <Swipeable 
           onSwipedRight={() => send('PREV')} 
           onSwipedLeft={() => send('NEXT')}
@@ -101,6 +104,14 @@ class Gallery extends React.Component {
             onLoad={() => send('RESOLVE')}
             onError={() => send('REJECT')}
             alt={image.meta}
+            onClick={() => {
+              // TODO LOGIC TO GO BACK AND FORTH ON IDX POSITION
+              !reachedEnd ? send('NEXT') : send('PREV')
+              if (idx === (max - 1)) {
+                this.setState({reachedEnd: true})
+              }              
+              if (idx === 1) {this.setState({reachedEnd: false})}
+            }}
           />
         </Swipeable>
 

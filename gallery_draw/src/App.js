@@ -5,7 +5,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h3>XState Gallery</h3>
         <div className="row">
           <div className="col col-6 center">
             <h4>Drawer 1</h4>
