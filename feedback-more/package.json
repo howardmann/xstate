@@ -4,6 +4,10 @@
   "private": true,
   "dependencies": {
     "@xstate/react": "^0.8.1",
+    "airtable": "^0.8.1",
+    "axios": "^0.19.2",
+    "marvel-characters": "^1.0.3",
+    "notyf": "^3.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "0.9.x",

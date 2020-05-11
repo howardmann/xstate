@@ -3,6 +3,8 @@ import {interpret} from 'xstate'
 // import galleryDB from './data/galleryDB'
 import galleryDb from './data-access/gallery-db'
 import GalleryMachine from './stateMachine/galleryMachine'
+// Library detect swipes
+import {Swipeable} from 'react-swipeable'
 
 let loadInitialState = async () =>{
   let {listCategories, listImages} = galleryDb
@@ -65,7 +67,7 @@ class Gallery extends React.Component {
 
     let getImage = ({images, idx, categoryId}) => {            
       if (images.length > 0) {
-        return  images.filter(el => el.categoryId == categoryId)[idx]
+        return  images.filter(el => el.categoryId == categoryId).reverse()[idx]
       }
       return {}
     }
@@ -74,27 +76,12 @@ class Gallery extends React.Component {
 
     return (
       <div>
-        <p>current: {JSON.stringify(current.value)}</p>
-        <p>context: {JSON.stringify(current.context)}</p>
 
-        {categories.map(el => (
-            <span>
-              <button 
-                style={{backgroundColor: current.context.categoryId === el.id ? 'gainsboro' : 'white'}}
-                onClick={() => send('UPDATE_CATEGORY', { categoryId: el.id, max: getMaxImagePos(el.id) })}>{el.name}</button>
-            </span>
-        ))}
-
-        {/* Carousel circle icons */}
-        {isMin && <p>&#9679; &#9675; &#9675;</p>}
-        {isMax && <p>&#9675; &#9675; &#9679;</p>}
-        {isMid && <p>&#9675; &#9679; &#9675;</p>}
-
-
-        <p>{image.meta}</p>
         {hasPrev && 
           <button disabled={current.matches('category.loading')} onClick={() => send('PREV')}>PREV</button>
         }
+
+        <span>{"      "}</span>
 
         {hasNext && 
           <button disabled={current.matches('category.loading')} onClick={() => send('NEXT')}>NEXT</button>
@@ -104,13 +91,35 @@ class Gallery extends React.Component {
         {current.matches('category.loading') && <p>⏳</p>}
         {current.matches('category.error') && <p> ❌ </p>}
         
-        <img width="50%"
-          style={current.matches('category.loading') || current.matches('category.error') ? {display: 'none'} : {}}
-          src={image.imageURL} 
-          onLoad={() => send('RESOLVE')}
-          onError={() => send('REJECT')}
-          alt={image.meta}
-        />
+        <Swipeable 
+          onSwipedRight={() => send('PREV')} 
+          onSwipedLeft={() => send('NEXT')}
+        >
+          <img width="50%"
+            style={current.matches('category.loading') || current.matches('category.error') ? {display: 'none'} : {}}
+            src={image.imageURL} 
+            onLoad={() => send('RESOLVE')}
+            onError={() => send('REJECT')}
+            alt={image.meta}
+          />
+        </Swipeable>
+
+        {/* Carousel circle icons */}
+        {isMin && <p>&#9679; &#9675; &#9675;</p>}
+        {isMax && <p>&#9675; &#9675; &#9679;</p>}
+        {isMid && <p>&#9675; &#9679; &#9675;</p>}
+
+        <p>{image.meta}</p>
+
+        {/* CATEGORIES */}
+        {categories.map(el => (
+            <span>
+              <button 
+                style={{backgroundColor: current.context.categoryId === el.id ? 'gainsboro' : 'white'}}
+                onClick={() => send('UPDATE_CATEGORY', { categoryId: el.id, max: getMaxImagePos(el.id) })}>{el.name}</button>
+            </span>
+        ))}
+
 
         <br/>        
       </div>

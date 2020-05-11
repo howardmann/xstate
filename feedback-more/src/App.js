@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import 'notyf/notyf.min.css';
 import Feedback from './components/Feedback'
 
 class App extends Component {
