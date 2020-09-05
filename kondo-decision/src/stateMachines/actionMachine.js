@@ -11,9 +11,29 @@ const actionMachine = Machine({
   id: 'machine',
   initial: 'status',
   context: {
-    status: 'In Progress'
+    status: 'In Progress',
+    comment: ''
   },
   states: {
+    idle: {
+      on: {
+        click: 'status'
+      }
+    },
+    commentInput: {
+      initial: 'focus',
+      states: {
+        focus: {
+          on: {
+            SUBMIT: '#machine.status'
+          }
+        },
+        blur: {}
+      },
+      on: {
+        CLOSE: 'status'
+      }
+    },
     status: {
       initial: 'boot',
       states: {
@@ -86,6 +106,10 @@ const actionMachine = Machine({
             status: 'Resolved'
           })
         }
+      },
+      on: {
+        CLOSE: 'idle',
+        ADD_COMMENT: 'commentInput'
       }
     }
   }

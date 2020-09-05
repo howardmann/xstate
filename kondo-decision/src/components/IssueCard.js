@@ -22,9 +22,29 @@ const getColor = (status) => {
 const MainButton = ({action, send}) => {
   return (
     <span style={{marginRight: '5px'}}>
-      <button onClick={() => send(action)}>{action}</button>
+      <button style={{backgroundColor: 'green', color: 'white'}} onClick={() => send(action)}>✨{action}✨</button>
     </span>    
   )
+}
+
+const UpdateButton = ({send}) => {
+  return (
+    <span style={{marginRight: '5px'}}>
+      <button style={{backgroundColor: 'blue', color: 'white'}} 
+      onClick={() => send('ADD_COMMENT')}>👋 UPDATE</button>
+    </span>    
+  )
+}
+
+const RejectButton = ({send}) => {
+  return (
+    <button 
+      style={{backgroundColor: 'gainsboro', marginLeft: '5px'}}
+      onClick={() => send('REJECT')}
+    >
+        👎 REJECT
+    </button>
+  )  
 }
 
 const SmallButton = ({action, send}) => {
@@ -35,11 +55,20 @@ const SmallButton = ({action, send}) => {
   )
 }
 
+const CommentInput = ({send}) => {
+  return (
+    <div>
+      <p>Add Comment</p>
+      <input type="text"/>
+      <button onClick={() => send('SUBMIT')}>Add Comment</button>
+    </div>
+  )
+}
 
 const IssueCard = ({data, handleStatusChange}) => {
   const issue = data
   // xState machine with initial context of issue status
-  const [current, send] = useMachine(actionMachine.withContext({status: issue.status}))
+  const [current, send] = useMachine(actionMachine.withContext({status: issue.status, comment: ''}))
 
   // Update React State when change to xState context
   React.useEffect(() => {
@@ -67,35 +96,51 @@ const IssueCard = ({data, handleStatusChange}) => {
       {current.matches('status.new') &&
         <>
           <MainButton action="APPROVE" send={send}/>
-          <MainButton action="REJECT" send={send}/>
-          <div style={{textAlign: 'right'}}>
-            <SmallButton action="HOLD" send={send}/>
-          </div>
+          <RejectButton send={send}/>          
         </>
       }
 
       {current.matches('status.inProgress') &&
         <>
-          <MainButton action="RESOLVED" send={send}/>
-          <div style={{textAlign: 'right'}}>
-            <SmallButton action="HOLD" send={send}/>
-            <SmallButton action="REJECT" send={send}/>
-          </div>
+          <button 
+            style={{backgroundColor: 'green', color: 'white', marginRight: '5px'}}
+            onClick={() => send('RESOLVED')}
+          >
+              ✔️ RESOLVE
+          </button>
+
+          <UpdateButton send={send}/>
+          
         </>
       }
 
       {current.matches('status.onHold') &&
         <>
           <MainButton action="APPROVE" send={send}/>
-          <MainButton action="REJECT" send={send}/>
+          <RejectButton send={send}/>
         </>
       }
 
       {current.matches('status.notDoing') &&
         <>
           <MainButton action="APPROVE" send={send}/>
-          <MainButton action="HOLD" send={send}/>
         </>
+      }      
+      {!current.matches('commentInput') &&
+        <div style={{textAlign: 'right'}}>
+          <button 
+            style={{backgroundColor: 'blue', color: 'white'}}
+            onClick={() => send('ADD_COMMENT')}
+          >
+              😃 Add Comment
+          </button>
+        </div>      
+      }
+
+      {current.matches('commentInput') &&
+        <div>
+          <CommentInput send={send}/>
+        </div>
       }
 
     </div>
