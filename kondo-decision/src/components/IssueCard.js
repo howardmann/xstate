@@ -155,7 +155,7 @@ const IssueCard = ({data, handleStatusChange}) => {
           <p>Subject:</p>
           <p><input type="text" value={issue.name}/></p>
           <p>Body:</p>
-          <textarea autoFocus cols="30" rows="5" placeholder="Leave a comment"></textarea>
+          <textarea cols="30" rows="5" placeholder="Leave a comment"></textarea>
           <p>                                  
             <button onClick={() => {
               send('SUBMIT')

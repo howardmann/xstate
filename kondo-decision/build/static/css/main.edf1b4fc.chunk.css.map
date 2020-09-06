@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.css"],"names":[],"mappings":"AAAA,EACE,QAAW,CACX,SACF,CAEA,KACE,mBAAoB,CACpB,WAAY,CACZ,gBACF","file":"main.edf1b4fc.chunk.css","sourcesContent":["* {\n  margin: 0px;\n  padding: 0px;\n}\n\nbody {\n  font-family: 'arial';\n  padding: 5px;\n  font-size: 0.85rem;\n}\n\n"]}
