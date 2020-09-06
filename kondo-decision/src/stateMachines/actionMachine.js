@@ -11,7 +11,7 @@ const actionMachine = Machine({
   id: 'machine',
   initial: 'status',
   context: {
-    status: 'In Progress',
+    status: 'New',
     comment: ''
   },
   states: {
@@ -20,26 +20,12 @@ const actionMachine = Machine({
         click: 'status'
       }
     },
-    commentInput: {
-      initial: 'focus',
-      states: {
-        focus: {
-          on: {
-            SUBMIT: '#machine.status'
-          }
-        },
-        blur: {}
-      },
-      on: {
-        CLOSE: 'status'
-      }
-    },
     status: {
-      initial: 'boot',
+      initial: 'load',
       states: {
-        boot: {
+        load: {
           on: {
-            INIT: [{
+            "": [{
                 target: 'new',
                 cond: ctx => isNew(ctx)
               },
@@ -64,7 +50,7 @@ const actionMachine = Machine({
         },
         new: {
           on: {
-            APPROVE: 'inProgress',
+            APPROVE: '#machine.email',
             REJECT: 'notDoing',
             HOLD: 'onHold'
           },
@@ -84,7 +70,7 @@ const actionMachine = Machine({
         },
         onHold: {
           on: {
-            APPROVE: 'inProgress',
+            APPROVE: '#machine.email',
             REJECT: 'notDoing'
           },
           entry: assign({
@@ -93,7 +79,7 @@ const actionMachine = Machine({
         },
         notDoing: {
           on: {
-            APPROVE: 'inProgress',
+            APPROVE: '#machine.email',
             HOLD: 'onHold'
           },
           entry: assign({
@@ -110,6 +96,31 @@ const actionMachine = Machine({
       on: {
         CLOSE: 'idle',
         ADD_COMMENT: 'commentInput'
+      }
+    },
+    commentInput: {
+      initial: 'focus',
+      states: {
+        focus: {
+          on: {
+            SUBMIT: '#machine.status'
+          }
+        },
+        blur: {}
+      },
+      on: {
+        CLOSE: 'status'
+      }
+    },
+    email: {
+      on: {
+        CLOSE: 'status',
+        SUBMIT: {
+          target: 'status',
+          actions: assign({
+            status: 'In Progress'
+          })
+        }
       }
     }
   }

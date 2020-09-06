@@ -10,11 +10,11 @@ import actionMachine from '../stateMachines/actionMachine'
 
 const getColor = (status) => {
   const colorIndex = {
-    "New": 'blue',
-    "In Progress": 'green',
-    "On Hold": 'orange',
-    "Resolved": 'chartreuse',
-    "Not Doing": 'gainsboro'    
+    "New": 'lightcyan',
+    "In Progress": 'lightgreen',
+    "On Hold": 'lightgoldenrodyellow',
+    "Resolved": 'lawngreen',
+    "Not Doing": 'lightgrey'    
   }
   return colorIndex[status]
 }
@@ -57,10 +57,15 @@ const SmallButton = ({action, send}) => {
 
 const CommentInput = ({send}) => {
   return (
-    <div>
+    <div style={{backgroundColor: 'lightblue'}}>
       <p>Add Comment</p>
-      <input type="text"/>
-      <button onClick={() => send('SUBMIT')}>Add Comment</button>
+      <textarea id="" cols="30" rows="4" placeholder="Enter comment"></textarea>
+      <p>
+        <button onClick={() => send('SUBMIT')}>ADD COMMENT</button>
+      </p>      
+      <p>
+        <button onClick={() => send('CLOSE')}>🔙</button>        
+      </p>
     </div>
   )
 }
@@ -77,13 +82,13 @@ const IssueCard = ({data, handleStatusChange}) => {
   }, [current.context.status])
 
   // Boot xState on load. Sets context to status based on initial context
-  React.useEffect(() => {
-    send('INIT')
-  })
+  // React.useEffect(() => {
+  //   send('INIT')
+  // })
 
 
   return (
-    <div style={{border: `2px solid ${getColor(issue.status)}`, padding: '3px', margin: '3px'}}>
+    <div style={{backgroundColor: getColor(issue.status), padding: '8px', margin: '4px'}}>
       <p>Name: {issue.name} | {issue.id}</p>
       <p>Assignee: {issue.assignee}</p> 
       <p>Status: {issue.status}</p>
@@ -124,22 +129,42 @@ const IssueCard = ({data, handleStatusChange}) => {
       {current.matches('status.notDoing') &&
         <>
           <MainButton action="APPROVE" send={send}/>
+          <button 
+            onClick={() => send('HOLD')}
+            style={{backgroundColor: 'palegoldenrod'}}
+          >
+            ✋ON HOLD
+          </button>
         </>
       }      
-      {!current.matches('commentInput') &&
-        <div style={{textAlign: 'right'}}>
-          <button 
-            style={{backgroundColor: 'blue', color: 'white'}}
-            onClick={() => send('ADD_COMMENT')}
-          >
-              😃 Add Comment
-          </button>
-        </div>      
-      }
 
       {current.matches('commentInput') &&
         <div>
           <CommentInput send={send}/>
+        </div>
+      }
+
+      {current.matches('email') && 
+        <div style={{backgroundColor: 'lightgreen'}}>
+          <h2>Send Email</h2>
+          <p>To:</p>
+          <p><input type="email" value={issue.email}/></p>
+          <p>Cc:</p>
+          <p><input type="email" value="engineering@cim.io"/></p>
+          <p>Subject:</p>
+          <p><input type="text" value={issue.name}/></p>
+          <p>Body:</p>
+          <textarea cols="30" rows="5" placeholder="Prefill body with issue fields"></textarea>
+          <p>                                  
+            <button onClick={() => {
+              send('SUBMIT')
+              alert('📧 Email Sent')
+            }}>📧 SUBMIT</button>
+          </p>
+          <p>
+            <button onClick={() => send('CLOSE')}>🔙</button>            
+          </p>
+
         </div>
       }
 

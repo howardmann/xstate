@@ -7,37 +7,43 @@ const initialData = [
     id: '1',
     name: 'Excessive operation',
     status: 'New',
-    assignee: 'bill'
+    assignee: 'bill',
+    email: 'bill@email.com'
   },
   {
     id: '2',
     name: 'Status Mismatch',
-    status: 'New',
-    assignee: 'bob'
+    status: 'In Progress',
+    assignee: 'bob',
+    email: 'bob@email.com'
   },
   {
     id: '3',
     name: 'Food court open',
     status: 'Resolved',
-    assignee: 'jane'
+    assignee: 'jane',
+    email: 'jane@email.com'
   },
   {
     id: '4',
     name: 'Magic mountain',
     status: 'Resolved',
-    assignee: 'billy'
+    assignee: 'billy',
+    email: 'billy@email.com'
   },
   {
     id: '5',
     name: 'Turn gas office',
     status: 'Not Doing',
-    assignee: 'jason'
+    assignee: 'jason',
+    email: 'jason@email.com'
   },
   {
     id: '6',
     name: 'Stage 4 Restriction',
     status: 'On Hold',
-    assignee: 'teddy'
+    assignee: 'teddy',
+    email: 'teddy@email.com'
   }
 ]
 
