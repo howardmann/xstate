@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
 import IssueList from './components/IssueList'
-
+import data from './db/issues'
 
 function App() {
   return (
-    <div>
+    <div class="container desktop-padding-px-100">
       <div>
         <h2 style={{float: 'left'}}>
           PROJECT KONDO
@@ -21,7 +21,7 @@ function App() {
         <div style={{clear: 'both'}}></div>
       </div>
       <p>
-        <IssueList/>
+        <IssueList data={data}/>
       </p>
       
     </div>

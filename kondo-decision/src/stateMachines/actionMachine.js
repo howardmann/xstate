@@ -16,9 +16,26 @@ const actionMachine = Machine({
   },
   states: {
     comment: {
+      initial: 'general',
       on: {
-        SUBMIT: '#machine.status',
-        CLOSE: 'status'
+        CLOSE: '#machine.status',
+        UPDATE_COMMENT: {
+          actions: assign({
+            comment: (_ctx, evt) => evt.comment
+          })
+        }
+      },
+      states: {
+        general: {
+          on: {
+            SUBMIT: '#machine.status'
+          }
+        },
+        resolved: {
+          on: {
+            SUBMIT: '#machine.status.resolved'
+          }
+        }
       }
     },
     status: {
@@ -67,10 +84,7 @@ const actionMachine = Machine({
             REJECT: 'notDoing',
             HOLD: 'onHold',
             RESOLVED: {
-              target: '#machine.comment',
-              actions: assign({
-                status: 'Resolved'
-              })
+              target: '#machine.comment.resolved'
             }
           },
           entry: assign({
@@ -116,6 +130,5 @@ const actionMachine = Machine({
     }
   }
 });
-
 
 export default actionMachine
