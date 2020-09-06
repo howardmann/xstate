@@ -59,7 +59,7 @@ const CommentInput = ({send}) => {
   return (
     <div style={{backgroundColor: 'lightblue'}}>
       <p>Add Comment</p>
-      <textarea id="" cols="30" rows="4" placeholder="Enter comment"></textarea>
+      <textarea id="" cols="30" rows="4" placeholder="Enter comment" autoFocus></textarea>
       <p>
         <button onClick={() => send('SUBMIT')}>ADD COMMENT</button>
       </p>      
@@ -138,7 +138,7 @@ const IssueCard = ({data, handleStatusChange}) => {
         </>
       }      
 
-      {current.matches('commentInput') &&
+      {current.matches('comment') &&
         <div>
           <CommentInput send={send}/>
         </div>
@@ -154,7 +154,7 @@ const IssueCard = ({data, handleStatusChange}) => {
           <p>Subject:</p>
           <p><input type="text" value={issue.name}/></p>
           <p>Body:</p>
-          <textarea cols="30" rows="5" placeholder="Prefill body with issue fields"></textarea>
+          <textarea autoFocus cols="30" rows="5" placeholder="Leave a comment"></textarea>
           <p>                                  
             <button onClick={() => {
               send('SUBMIT')

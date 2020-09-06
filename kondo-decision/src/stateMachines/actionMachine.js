@@ -15,13 +15,17 @@ const actionMachine = Machine({
     comment: ''
   },
   states: {
-    idle: {
+    comment: {
       on: {
-        click: 'status'
+        SUBMIT: '#machine.status',
+        CLOSE: 'status'
       }
     },
     status: {
       initial: 'load',
+      on: {
+        ADD_COMMENT: 'comment'
+      },
       states: {
         load: {
           on: {
@@ -62,7 +66,12 @@ const actionMachine = Machine({
           on: {
             REJECT: 'notDoing',
             HOLD: 'onHold',
-            RESOLVED: 'resolved'
+            RESOLVED: {
+              target: '#machine.comment',
+              actions: assign({
+                status: 'Resolved'
+              })
+            }
           },
           entry: assign({
             status: 'In Progress'
@@ -92,24 +101,6 @@ const actionMachine = Machine({
             status: 'Resolved'
           })
         }
-      },
-      on: {
-        CLOSE: 'idle',
-        ADD_COMMENT: 'commentInput'
-      }
-    },
-    commentInput: {
-      initial: 'focus',
-      states: {
-        focus: {
-          on: {
-            SUBMIT: '#machine.status'
-          }
-        },
-        blur: {}
-      },
-      on: {
-        CLOSE: 'status'
       }
     },
     email: {
