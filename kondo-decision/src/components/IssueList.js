@@ -13,14 +13,14 @@ const initialData = [
   {
     id: '2',
     name: 'Status Mismatch',
-    status: 'In Progress',
+    status: 'New',
     assignee: 'bob',
     email: 'bob@email.com'
   },
   {
     id: '3',
     name: 'Food court open',
-    status: 'Resolved',
+    status: 'New',
     assignee: 'jane',
     email: 'jane@email.com'
   },
@@ -44,7 +44,29 @@ const initialData = [
     status: 'On Hold',
     assignee: 'teddy',
     email: 'teddy@email.com'
+  },
+  {
+    id: '7',
+    name: 'Stage 3 Restriction',
+    status: 'Resolved',
+    assignee: 'pope',
+    email: 'pope@email.com'
+  },
+  {
+    id: '8',
+    name: 'AHU CO2 sensor replace',
+    status: 'New',
+    assignee: 'karen',
+    email: 'karen@email.com'
+  },
+  {
+    id: '9',
+    name: 'Tenant complaint',
+    status: 'Resolved',
+    assignee: 'tell',
+    email: 'tell@email.com'
   }
+
 ]
 
 const sortByStatus = (data) => {
@@ -76,10 +98,28 @@ const IssueList = ({data = initialData}) => {
       }))
   }
 
+  const hasNew = () => {
+    return issues.filter(el => el.status === 'New').length
+  }
+
   return (
-    <div>
-        {sortByStatus(issues).map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
-    </div>
+    <>
+      <div>
+          <h3>New</h3>
+          {sortByStatus(issues).filter(el => el.status === 'New').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
+          {!hasNew() && 
+          <div style={{margin: '15px', padding: '15px', textAlign: 'center'}}>
+            <p>✨ No new issues ✨</p>
+          </div>
+            
+          }
+      </div>
+      <hr/>
+      <div style={{marginTop: '20px'}}>
+          <h3>Previous</h3>
+          {sortByStatus(issues).filter(el => el.status !== 'New').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
+      </div>
+    </>
   )
 }
 

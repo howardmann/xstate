@@ -21,7 +21,7 @@ const getColor = (status) => {
 
 const MainButton = ({action, send}) => {
   return (
-    <span style={{marginRight: '5px'}}>
+    <span style={{margin: '0px 8px'}}>
       <button style={{backgroundColor: 'green', color: 'white'}} onClick={() => send(action)}>✨{action}✨</button>
     </span>    
   )
@@ -29,7 +29,7 @@ const MainButton = ({action, send}) => {
 
 const UpdateButton = ({send}) => {
   return (
-    <span style={{marginRight: '5px'}}>
+    <span style={{margin: '0px 8px'}}>
       <button style={{backgroundColor: 'blue', color: 'white'}} 
       onClick={() => send('ADD_COMMENT')}>👋 UPDATE</button>
     </span>    
@@ -93,20 +93,22 @@ const IssueCard = ({data, handleStatusChange}) => {
       <p>Assignee: {issue.assignee}</p> 
       <p>Status: {issue.status}</p>
 
-      <small>
+      {/* <small>
         <p>current.value: {JSON.stringify(current.value)}</p>
         <p>current.context: {JSON.stringify(current.context)}</p>
-      </small>      
+      </small>       */}
 
       {current.matches('status.new') &&
-        <>
-          <MainButton action="APPROVE" send={send}/>
+        <div style={{textAlign: 'right'}}>
           <RejectButton send={send}/>          
-        </>
+          <MainButton action="APPROVE" send={send}/>
+        </div>
       }
 
       {current.matches('status.inProgress') &&
-        <>
+        <div style={{textAlign: 'right'}}>
+          <UpdateButton send={send}/>
+
           <button 
             style={{backgroundColor: 'green', color: 'white', marginRight: '5px'}}
             onClick={() => send('RESOLVED')}
@@ -114,28 +116,27 @@ const IssueCard = ({data, handleStatusChange}) => {
               ✔️ RESOLVE
           </button>
 
-          <UpdateButton send={send}/>
           
-        </>
+        </div>
       }
 
       {current.matches('status.onHold') &&
-        <>
-          <MainButton action="APPROVE" send={send}/>
+        <div style={{textAlign: 'right'}}>
           <RejectButton send={send}/>
-        </>
+          <MainButton action="APPROVE" send={send}/>
+        </div>
       }
 
       {current.matches('status.notDoing') &&
-        <>
-          <MainButton action="APPROVE" send={send}/>
+        <div style={{textAlign: 'right'}}>
           <button 
             onClick={() => send('HOLD')}
             style={{backgroundColor: 'palegoldenrod'}}
           >
             ✋ON HOLD
           </button>
-        </>
+          <MainButton action="APPROVE" send={send}/>
+        </div>
       }      
 
       {current.matches('comment') &&

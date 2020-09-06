@@ -5,9 +5,25 @@ import IssueList from './components/IssueList'
 
 function App() {
   return (
-    <div className="App">
-      <h1>Kondo Actions</h1>
-      <IssueList/>
+    <div>
+      <div>
+        <h2 style={{float: 'left'}}>
+          PROJECT KONDO
+        </h2>
+        <button 
+          style={{float: 'right'}}
+          onClick = {
+            () => alert('⚒️ New Issue Form')
+          }
+        >
+          + Add
+        </button>
+        <div style={{clear: 'both'}}></div>
+      </div>
+      <p>
+        <IssueList/>
+      </p>
+      
     </div>
   );
 }
