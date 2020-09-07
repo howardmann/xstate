@@ -6,19 +6,13 @@ import data from './db/issues'
 function App() {
   return (
     <div class="container desktop-padding-px-100">
-      <div>
-        <h2 style={{float: 'left'}}>
-          PROJECT KONDO
-        </h2>
-        <button 
-          style={{float: 'right'}}
-          onClick = {
-            () => alert('⚒️ New Issue Form')
-          }
-        >
-          + Add
-        </button>
-        <div style={{clear: 'both'}}></div>
+      <div class="row">
+        <div className="col-10">
+          <h1>Issues</h1>
+        </div>
+        <div className="col-2 right-align">
+          <a class="btn btn-outline">+ Add</a>
+        </div>
       </div>
       <p>
         <IssueList data={data}/>
