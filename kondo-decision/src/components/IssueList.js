@@ -105,11 +105,11 @@ const IssueList = ({data = initialData}) => {
   return (
     <>
       <div>
-          <h3>New</h3>
+          <h3>Inbox</h3>
           {sortByStatus(issues).filter(el => el.status === 'New').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
           {!hasNew() && 
           <div style={{margin: '15px', padding: '15px', textAlign: 'center'}}>
-            <p>✨ No new issues ✨</p>
+            <p>✨ Nothing new for you ✨</p>
           </div>
             
           }

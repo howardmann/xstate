@@ -1,7 +1,7 @@
 import React from 'react';
 import {useMachine} from '@xstate/react'
 import actionMachine from '../stateMachines/actionMachine'
-import { send } from 'xstate/lib/actionTypes';
+
 
 // const initialData = {
 //   name: 'Excessive operation',
@@ -12,44 +12,58 @@ import { send } from 'xstate/lib/actionTypes';
 const getColor = (status) => {
   const colorIndex = {
     "New": 'teal',
-    "In Progress": 'green',
+    "In Progress": 'lime',
     "On Hold": 'orange',
-    "Resolved": 'emerald',
+    "Resolved": 'green',
     "Not Doing": 'gray',
     "Urgent": 'red',
     "Maintenance": 'stone',
-    "Monitor": 'newblue' 
+    "Monitor": 'blue' 
   }
   return colorIndex[status]
 }
 
-const MainButton = ({action, send}) => {
+const MailToButton = ({issue}) => {
   return (
-    <span style={{margin: '0px 8px'}}>
-      <button class="btn btn-primary" onClick={() => send(action)}>✨{action}✨</button>
-    </span>    
+    <a href={issue.mailto} target="_blank">Send Email</a>
   )
 }
+
+const ApproveButton = ({send}) => {
+  return (
+    <button class="btn btn-primary" onClick={() => send('APPROVE')}>✨ Approve ✨</button>
+  )
+}
+
+const ResolveButton = ({send}) => {
+  return (
+      <button class="btn btn-primary"
+      onClick={() => send('RESOLVED')}>Resolved</button>
+  )
+}
+
+const OnHoldButton = ({send}) => {
+  return (
+      <button class="btn bg-yellow gray opacity-70"
+      onClick={() => send('HOLD')}>On Hold</button>
+  )
+}
+
+const NotDoingButton = ({send}) => {
+  return (
+      <button class="btn bg-smoke gray opacity-70"
+      onClick={() => send('REJECT')}>Not Doing</button>
+  )
+}
+
 
 const UpdateButton = ({send}) => {
   return (
-    <span style={{margin: '0px 8px'}}>
-      <button class="btn btn-outline stone border-stone"
-      onClick={() => send('ADD_COMMENT')}>👋 UPDATE</button>
-    </span>    
+      <button class="btn bg-blue"
+      onClick={() => send('ADD_COMMENT')}>+ Add Comment</button>
   )
 }
 
-const RejectButton = ({send}) => {
-  return (
-    <button 
-      class="btn btn-outline stone border-stone"
-      onClick={() => send('REJECT')}
-    >
-        👎 REJECT
-    </button>
-  )  
-}
 
 const CommentInput = ({send, current}) => {
   return (
@@ -87,123 +101,206 @@ const IssueCard = ({data, handleStatusChange}) => {
   }, [current.context.status])
 
   return (
-    <div class="row border rounded p-5 my-5">
+    <div class="row border-2 border-platinum rounded bg-white p-5 my-5">
         <div 
           onClick={() => send('TOGGLE')}
-          class="col-2 cursor">
-          <img height="40" src={issue.companyLogo} alt=""/>
-          <p class={`fs-12 bold ${getColor(issue.status)}`}>
-            {issue.status.toUpperCase()}
-          </p>
-          <p class={`fs-12 truncate ${getColor(issue.priority)}`}>
+          class="col-2 phone-col-3 cursor">
+          <div className="row">
+              <img height="40" src={issue.companyLogo} alt=""/>
+          </div>
+          <div className="row">
+            <span
+              class={`bg-${getColor(issue.status)} fs-12 white px-5 rounded truncate`}
+            >
+              {(issue.priority === 'Urgent') && 
+                <span> ⚠️ </span>
+              }
+
+              {issue.status}
+            </span>
+          </div>          
+          {/* <p class={`fs-12 truncate ${getColor(issue.priority)}`}>
             {issue.priority}
           </p>
-
+          */}
         </div>
-        <div class="col-10">
+        <div class="col-10 phone-col-9 ">
           <div 
             onClick={() => send('TOGGLE')} 
             class="row cursor"
           >
-            <p class="truncate">{issue.name}</p>
-            <p class="truncate fs-14">{issue.assigned}</p>
+            <p class="fs-14 gray truncate">
+              {issue.name}
+            </p>            
           </div>
           <div class="row">
-            <div class="col-12">
+            <div 
+              onClick={() => send('TOGGLE')} 
+              className="col-8 phone-col-4 truncate cursor">
+              <p class="fs-10 mt-5 stone small">ASSIGNED</p>
+              <p class="truncate fs-14">{issue.assigned}</p>
+
+            </div>
+            <div class="col-4 phone-col-8">
               {/* ACTION BUTTONS */}
-              <div class="right-align">
+              <div class="right-align mt-5">
                 {current.matches('actions.status.new') &&
                   <div>
-                    <RejectButton send={send}/>          
-                    <MainButton action="APPROVE" send={send}/>
+                    <ApproveButton send={send}/>
                   </div>
                 }
 
                 {current.matches('actions.status.inProgress') &&
                   <div>
                     <UpdateButton send={send}/>
-
-                    <button 
-                      class="btn btn-primary"
-                      onClick={() => send('RESOLVED')}
-                    >
-                        ✔️ RESOLVE
-                    </button>
-
-                    
                   </div>
                 }
 
                 {current.matches('actions.status.onHold') &&
                   <div>
-                    <RejectButton send={send}/>
-                    <MainButton action="APPROVE" send={send}/>
+                    <ApproveButton send={send}/>
                   </div>
                 }
 
                 {current.matches('actions.status.notDoing') &&
                   <div>
-                    <button 
-                      onClick={() => send('HOLD')}
-                      class="btn btn-outline stone border-stone"
-                    >
-                      ✋ON HOLD
-                    </button>
-                    <MainButton action="APPROVE" send={send}/>
+                    <ApproveButton send={send}/>
                   </div>
                 }      
-
-                {current.matches('actions.comment') &&
-                  <div class="right-align">
-                    <CommentInput send={send} current={current}/>
-                  </div>
-                }
-
-                {current.matches('actions.email') && 
-                  <div class="left-align p-5 border">
-                    <h3 class="center">Send Email</h3>
-                    <p>To:</p>
-                    <p><input class="width-100" type="email" value={issue.email}/></p>
-                    <p>Cc:</p>
-                    <p><input class="width-100" type="email" value="engineering@cim.io"/></p>
-                    <p>Subject:</p>
-                    <p><input class="width-100" type="text" value={issue.name}/></p>
-                    <p>Body:</p>
-                    <textarea class="width-100" cols="30" rows="5" placeholder="Prefill issue details with CTA link"></textarea>
-                    <div class="row">                                  
-                      <div className="col-2">
-                        <button class="btn btn-outline" onClick={() => send('CLOSE')}>🔙</button>            
-                      </div>
-                      <div className="col-10 right-align">
-                        <button class="btn btn-primary right-align" onClick={() => {
-                          send('SUBMIT')
-                          alert('📧 Email Sent')
-                        }}>📧 SUBMIT</button>
-                      </div>                      
-                    </div>
-                      
-
-                  </div>
-                }
               </div>
             </div>
           </div>
-          
+
+          <div className="row">
+            {current.matches('actions.comment') &&
+              <div class="right-align">
+                <CommentInput send={send} current={current}/>
+              </div>
+            }
+
+            {current.matches('actions.email') && 
+              <div class="left-align p-5 border">
+                <h3 class="center">Send Email</h3>
+                <p>To:</p>
+                <p><input class="width-100" type="email" value={issue.email}/></p>
+                <p>Cc:</p>
+                <p><input class="width-100" type="email" value="engineering@cim.io"/></p>
+                <p>Subject:</p>
+                <p><input class="width-100" type="text" value={issue.name}/></p>
+                <p>Body:</p>
+                <textarea class="width-100" cols="30" rows="5" placeholder="Prefill issue details with CTA link"></textarea>
+                <div class="row">                                  
+                  <div className="col-2">
+                    <button class="btn btn-outline" onClick={() => send('CLOSE')}>🔙</button>            
+                  </div>
+                  <div className="col-10 right-align">
+                    <button class="btn btn-primary right-align" onClick={() => {
+                      send('SUBMIT')
+                      alert('📧 Email Sent')
+                    }}>📧 SUBMIT</button>
+                  </div>                      
+                </div>                  
+              </div>
+            }
+          </div>
+
           {current.matches('issue.active') &&
-            <div class="row cursor"
-                onClick={() => send('TOGGLE')}
-            >
-              <p class="fs-14">Description:</p>
-              <p class="fs-12">{issue.description}</p>
-              <p class="fs-14">Solution:</p>
-              <p class="fs-12">{issue.solution}</p>
-              <p class="fs-14">Improve:</p>
-              <p class="fs-12">{issue.benefit}</p>            
-              <p class="fs-14">Equipment:</p>
-              <p class="fs-12">{issue.equipment}</p>            
-              <p class="fs-14">Tenants:</p>
-              <p class="fs-12">{issue.tenant}</p>       
-              <button onClick={() => alert('Open Edit Issue Form')}>Edit</button>                 
+            <div>
+              <div
+                 class="row cursor"
+                onClick={() => send('TOGGLE')}            
+              >
+                <p class="fs-10 stone small mt-10">⚠️ DESCRIPTION</p>
+                <p class="fs-12">{issue.description}</p>
+                <p class="fs-10 stone small mt-10">✅ SOLUTION</p>
+                <p class="fs-12">{issue.solution}</p>
+                <p class="fs-10 stone small mt-10">IMPROVE</p>
+                <p class="fs-12">{issue.benefit}</p>            
+                <p class="fs-10 stone small mt-10">EQUIPMENT</p>
+                <p class="fs-12">{issue.equipment}</p>            
+                {issue.tenants.length > 0 &&
+                <>
+                  <p class="fs-10 stone small mt-10">TENANTS AFFECTED</p>              
+                  <p class="fs-12">{issue.tenants}</p>
+                </>
+                }
+
+                <p class="fs-10 stone small mt-10">ISSUE RAISED</p>
+                <p class="fs-12">{issue.raised}</p>            
+
+
+                <p class="fs-10 stone small mt-10">COMMENTS</p>
+                <p class="fs-12">{issue.comments}</p>            
+
+              </div>              
+              
+              <div className="row">
+                {issue.attachments && <p class="fs-10 stone small mt-10">ATTACHMENTS</p>}
+                {(issue.attachments) &&
+
+                  issue.attachments.map(el => {
+                    return <a href={el} target="_blank">
+                      <img height="80" src={el}/>
+                    </a>
+                  })
+                }
+              </div>
+              
+              <div className="row">
+                  <div className="col-12 right-align">
+                    <MailToButton issue={issue}/>
+                  </div>
+                
+              </div>
+              <div class="row mt-20">
+                <div className="col-2">
+                  <a
+                    onClick={() => alert('Open Edit Issue Form')} 
+                    class="btn bg-stone">
+                    Edit
+                  </a>
+                </div>
+
+                <div className="col-10 right-align">
+                  {current.matches('actions.status.new') &&
+                    <div>
+                      <NotDoingButton send={send}/>
+                      <OnHoldButton send={send}/>
+                      <UpdateButton send={send}/>
+                    </div>
+                  }
+
+                  {current.matches('actions.status.inProgress') &&
+                    <div>
+                      <NotDoingButton send={send}/>
+                      <OnHoldButton send={send}/>
+                      <ResolveButton send={send}/>
+                    </div>
+                  }
+
+                  {current.matches('actions.status.onHold') &&
+                    <div>
+                      <NotDoingButton send={send}/>
+                      <UpdateButton send={send}/>
+                    </div>
+                  }
+
+                  {current.matches('actions.status.notDoing') &&
+                    <div>
+                      <OnHoldButton send={send}/>
+                      <UpdateButton send={send}/>
+                    </div>
+                  }
+
+                  {current.matches('actions.status.resolved') &&
+                    <div>
+                      <UpdateButton send={send}/>
+                    </div>
+                  }
+
+
+                </div>
+              </div>              
             </div>
           }
 

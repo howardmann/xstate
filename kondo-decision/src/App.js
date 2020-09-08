@@ -5,19 +5,27 @@ import data from './db/issues'
 
 function App() {
   return (
-    <div class="container desktop-padding-px-100">
-      <div class="row">
-        <div className="col-10">
-          <h1>Issues</h1>
+    <div class="px-10 desktop-px-50 laptop-px-50" style={{backgroundColor: '#F5F5F5'}}>
+      <div className="container">
+        <div class="row flex items-center">
+          <div className="col-4">
+            <img height="20" src="https://cim.io/wp-content/uploads/2019/10/CIM_Logo_RGB.svg" alt=""/>
+          </div>
+          <div className="col-4 center">
+            <h2>
+              Issues
+            </h2>
+          </div>
+          <div className="col-4 right-align">
+            <a
+              onClick={() => alert('Add Issue Form (TBC)')} 
+              class="btn btn-outline">+ Add</a>
+          </div>
         </div>
-        <div className="col-2 right-align">
-          <a class="btn btn-outline">+ Add</a>
-        </div>
-      </div>
-      <p>
-        <IssueList data={data}/>
-      </p>
-      
+        <p>
+          <IssueList data={data}/>
+        </p>
+      </div>      
     </div>
   );
 }

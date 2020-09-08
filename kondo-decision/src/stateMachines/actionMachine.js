@@ -19,8 +19,16 @@ const actionMachine = Machine({
     issue: {
       initial: 'inactive',
       states: {
-        inactive: { on: { TOGGLE: 'active' } },
-        active: { on: { TOGGLE: 'inactive' } }
+        inactive: {
+          on: {
+            TOGGLE: 'active'
+          }
+        },
+        active: {
+          on: {
+            TOGGLE: 'inactive'
+          }
+        }
       },
       on: {
         HIDE_ISSUE: 'issue.inactive'
@@ -34,7 +42,7 @@ const actionMachine = Machine({
           entry: send('HIDE_ISSUE'),
           on: {
             ADD_COMMENT: '#machine.actions.comment.general'
-          },        
+          },
           states: {
             load: {
               on: {
@@ -75,9 +83,7 @@ const actionMachine = Machine({
               on: {
                 REJECT: 'notDoing',
                 HOLD: 'onHold',
-                RESOLVED: {
-                  target: '#machine.actions.comment.resolved'
-                }
+                RESOLVED: 'resolved'
               },
               entry: assign({
                 status: 'In Progress'
@@ -108,7 +114,7 @@ const actionMachine = Machine({
               })
             }
           }
-        },        
+        },
         comment: {
           initial: 'general',
           entry: send('HIDE_ISSUE'),
@@ -125,11 +131,6 @@ const actionMachine = Machine({
               on: {
                 SUBMIT: '#machine.actions.status'
               }
-            },
-            resolved: {
-              on: {
-                SUBMIT: '#machine.actions.status.resolved'
-              }
             }
           }
         },
@@ -139,7 +140,9 @@ const actionMachine = Machine({
             CLOSE: 'status',
             SUBMIT: {
               target: 'status',
-              actions: assign({status: 'In Progress'})
+              actions: assign({
+                status: 'In Progress'
+              })
             }
           }
         }
