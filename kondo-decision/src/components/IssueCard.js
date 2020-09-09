@@ -272,7 +272,10 @@ const IssueCard = ({data, handleStatusChange}) => {
                     <EditButton/>
                   </div>
                   <div className="col-6 right-align my-5">
-                    <MailToButton send={send}/>
+                    {current.matches('actions.status.new') && 
+                      <MailToButton send={send}/>
+                    }
+                    
                   </div>
                 
               </div>
