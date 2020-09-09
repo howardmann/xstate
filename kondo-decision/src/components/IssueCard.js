@@ -25,7 +25,7 @@ const getColor = (status) => {
 
 const MailToButton = ({issue}) => {
   return (
-    <a href={issue.mailto} target="_blank">Send Email</a>
+    <a href={issue.mailto} target="_blank">📧 Email Me</a>
   )
 }
 
@@ -38,21 +38,21 @@ const ApproveButton = ({send}) => {
 const ResolveButton = ({send}) => {
   return (
       <button class="btn btn-primary"
-      onClick={() => send('RESOLVED')}>Resolved</button>
+      onClick={() => send('RESOLVED')}>✔️ Resolved</button>
   )
 }
 
 const OnHoldButton = ({send}) => {
   return (
       <button class="btn bg-yellow gray opacity-70"
-      onClick={() => send('HOLD')}>On Hold</button>
+      onClick={() => send('HOLD')}>✋ On Hold</button>
   )
 }
 
 const NotDoingButton = ({send}) => {
   return (
       <button class="btn bg-smoke gray opacity-70"
-      onClick={() => send('REJECT')}>Not Doing</button>
+      onClick={() => send('REJECT')}>👎 Not Doing</button>
   )
 }
 
@@ -206,31 +206,62 @@ const IssueCard = ({data, handleStatusChange}) => {
 
           {current.matches('issue.active') &&
             <div>
+              <div className="row">
+                <div className="col-12 right-align">
+                    {current.matches('actions.status.new') &&
+                      <div>
+                        <NotDoingButton send={send}/>
+                        <OnHoldButton send={send}/>
+                      </div>
+                    }
+
+                    {current.matches('actions.status.inProgress') &&
+                      <div>
+                        <NotDoingButton send={send}/>
+                        <OnHoldButton send={send}/>
+                        <ResolveButton send={send}/>
+                      </div>
+                    }
+
+                    {current.matches('actions.status.onHold') &&
+                      <div>
+                        <NotDoingButton send={send}/>
+                      </div>
+                    }
+
+                    {current.matches('actions.status.notDoing') &&
+                      <div>
+                        <OnHoldButton send={send}/>
+                      </div>
+                    }
+
+                  </div>                
+              </div>              
               <div
                  class="row cursor"
                 onClick={() => send('TOGGLE')}            
               >
-                <p class="fs-10 stone small mt-10">⚠️ DESCRIPTION</p>
-                <p class="fs-12">{issue.description}</p>
-                <p class="fs-10 stone small mt-10">✅ SOLUTION</p>
-                <p class="fs-12">{issue.solution}</p>
-                <p class="fs-10 stone small mt-10">IMPROVE</p>
-                <p class="fs-12">{issue.benefit}</p>            
-                <p class="fs-10 stone small mt-10">EQUIPMENT</p>
-                <p class="fs-12">{issue.equipment}</p>            
+                <p class="fs-12 stone small mt-10">⚠️ DESCRIPTION</p>
+                <p class="fs-14">{issue.description}</p>
+                <p class="fs-12 stone small mt-10">✅ SOLUTION</p>
+                <p class="fs-14">{issue.solution}</p>
+                <p class="fs-12 stone small mt-10">IMPROVE</p>
+                <p class="fs-14">{issue.benefit}</p>            
+                <p class="fs-12 stone small mt-10">EQUIPMENT</p>
+                <p class="fs-14">{issue.equipment}</p>            
                 {issue.tenants.length > 0 &&
                 <>
-                  <p class="fs-10 stone small mt-10">TENANTS AFFECTED</p>              
-                  <p class="fs-12">{issue.tenants}</p>
+                  <p class="fs-12 stone small mt-10">TENANTS AFFECTED</p>              
+                  <p class="fs-14">{issue.tenants}</p>
                 </>
                 }
 
-                <p class="fs-10 stone small mt-10">ISSUE RAISED</p>
-                <p class="fs-12">{issue.raised}</p>            
+                <p class="fs-12 stone small mt-10">ISSUE RAISED</p>
+                <p class="fs-14">{issue.raised}</p>            
 
 
-                <p class="fs-10 stone small mt-10">COMMENTS</p>
-                <p class="fs-12">{issue.comments}</p>            
+                <p class="fs-12 stone small mt-10">COMMENTS</p>
+                <p class="fs-14">{issue.comments}</p>            
 
               </div>              
               
@@ -260,45 +291,10 @@ const IssueCard = ({data, handleStatusChange}) => {
                     Edit
                   </a>
                 </div>
-
                 <div className="col-10 right-align">
-                  {current.matches('actions.status.new') &&
-                    <div>
-                      <NotDoingButton send={send}/>
-                      <OnHoldButton send={send}/>
-                      <UpdateButton send={send}/>
-                    </div>
+                  {!current.matches('actions.status.inProgress') &&
+                    <UpdateButton send={send}/>
                   }
-
-                  {current.matches('actions.status.inProgress') &&
-                    <div>
-                      <NotDoingButton send={send}/>
-                      <OnHoldButton send={send}/>
-                      <ResolveButton send={send}/>
-                    </div>
-                  }
-
-                  {current.matches('actions.status.onHold') &&
-                    <div>
-                      <NotDoingButton send={send}/>
-                      <UpdateButton send={send}/>
-                    </div>
-                  }
-
-                  {current.matches('actions.status.notDoing') &&
-                    <div>
-                      <OnHoldButton send={send}/>
-                      <UpdateButton send={send}/>
-                    </div>
-                  }
-
-                  {current.matches('actions.status.resolved') &&
-                    <div>
-                      <UpdateButton send={send}/>
-                    </div>
-                  }
-
-
                 </div>
               </div>              
             </div>
