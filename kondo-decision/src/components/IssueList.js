@@ -98,8 +98,8 @@ const IssueList = ({data = initialData}) => {
       }))
   }
 
-  const hasNew = () => {
-    return issues.filter(el => el.status === 'New').length
+  const hasInbox = () => {
+    return issues.filter(el => el.category === 'inbox').length
   }
 
   return (
@@ -107,7 +107,7 @@ const IssueList = ({data = initialData}) => {
       <div>
           <h3>Inbox</h3>
           {sortByStatus(issues).filter(el => el.category === 'inbox').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
-          {!hasNew() && 
+          {!hasInbox() && 
           <div style={{margin: '15px', padding: '15px', textAlign: 'center'}}>
             <p>✨ Nothing new for you ✨</p>
           </div>
