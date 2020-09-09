@@ -88,11 +88,11 @@ const IssueList = ({data = initialData}) => {
   // React Issue State
   const [issues, setIssues] = React.useState(data)
   
-  const handleStatusChange = ({id, status}) => {
+  const handleStatusChange = ({id, status, category}) => {
     setIssues(
       issues.map(issue => {
         if(issue.id === id){
-          return {...issue, status}
+          return {...issue, category, status}
         }
         return issue
       }))
@@ -106,7 +106,7 @@ const IssueList = ({data = initialData}) => {
     <>
       <div>
           <h3>Inbox</h3>
-          {sortByStatus(issues).filter(el => el.status === 'New').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
+          {sortByStatus(issues).filter(el => el.category === 'inbox').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
           {!hasNew() && 
           <div style={{margin: '15px', padding: '15px', textAlign: 'center'}}>
             <p>✨ Nothing new for you ✨</p>
@@ -117,7 +117,7 @@ const IssueList = ({data = initialData}) => {
       <hr/>
       <div style={{marginTop: '20px'}}>
           <h3>Previous</h3>
-          {sortByStatus(issues).filter(el => el.status !== 'New').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
+          {sortByStatus(issues).filter(el => el.category === 'previous').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
       </div>
     </>
   )

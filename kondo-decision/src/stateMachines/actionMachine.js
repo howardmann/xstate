@@ -12,10 +12,48 @@ const actionMachine = Machine({
   initial: 'actions',
   type: 'parallel',
   context: {
-    status: 'New',
-    comment: ''
+    status: 'In Progress',
+    comment: '',
+    category: 'previous'
   },
   states: {
+    category: {
+      initial: 'load',
+      states: {
+        load: {
+          on: {
+            "": [{
+              target: 'inbox',
+              cond: ctx => ctx.category === 'inbox'
+            }, {
+              target: 'previous',
+              cond: ctx => ctx.category === 'previous'
+            }]
+          }
+        },
+        inbox: {
+          entry: assign({
+            category: 'inbox'
+          }),
+          on: {
+            MARK_READ: {
+              target: 'previous',
+              cond: ctx => !isNew(ctx)
+            }
+          }
+        },
+        previous: {
+          entry: assign({
+            category: 'previous'
+          }),
+          on: {
+            MARK_UNREAD: {
+              target: 'inbox',
+            }
+          }
+        }
+      }
+    },
     issue: {
       initial: 'inactive',
       states: {
@@ -72,18 +110,33 @@ const actionMachine = Machine({
             new: {
               on: {
                 APPROVE: '#machine.actions.email',
-                REJECT: 'notDoing',
-                HOLD: 'onHold'
+                REJECT: {
+                  target: 'notDoing',
+                  actions: send('MARK_READ')
+                },
+                HOLD: {
+                  target: 'onHold',
+                  actions: send('MARK_READ')
+                }
               },
-              entry: assign({
+              entry: [assign({
                 status: 'New'
-              })
+              }), send('MARK_UNREAD')]
             },
             inProgress: {
               on: {
-                REJECT: 'notDoing',
-                HOLD: 'onHold',
-                RESOLVED: 'resolved'
+                REJECT: {
+                  target: 'notDoing',
+                  actions: send('MARK_READ')
+                },
+                HOLD: {
+                  target: 'onHold',
+                  actions: send('MARK_READ')
+                },
+                RESOLVED: {
+                  target: 'resolved',
+                  actions: send('MARK_READ')
+                }
               },
               entry: assign({
                 status: 'In Progress'
@@ -92,7 +145,10 @@ const actionMachine = Machine({
             onHold: {
               on: {
                 APPROVE: '#machine.actions.email',
-                REJECT: 'notDoing'
+                REJECT: {
+                  target: 'notDoing',
+                  actions: send('MARK_READ')
+                }
               },
               entry: assign({
                 status: 'On Hold'
@@ -101,7 +157,10 @@ const actionMachine = Machine({
             notDoing: {
               on: {
                 APPROVE: '#machine.actions.email',
-                HOLD: 'onHold'
+                HOLD: {
+                  target: 'onHold',
+                  actions: send('MARK_READ')
+                }
               },
               entry: assign({
                 status: 'Not Doing'
@@ -129,7 +188,10 @@ const actionMachine = Machine({
           states: {
             general: {
               on: {
-                SUBMIT: '#machine.actions.status'
+                SUBMIT: {
+                  target: '#machine.actions.status',
+                  actions: send('MARK_READ')
+                }
               }
             }
           }
@@ -140,9 +202,9 @@ const actionMachine = Machine({
             CLOSE: 'status',
             SUBMIT: {
               target: 'status',
-              actions: assign({
+              actions: [assign({
                 status: 'In Progress'
-              })
+              }), send('MARK_READ')]
             }
           }
         }
