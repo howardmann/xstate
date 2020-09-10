@@ -9,7 +9,9 @@
     "@xstate/react": "^0.8.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.1.0",
     "react-scripts": "3.4.3",
+    "react-use-intercom": "^1.1.0",
     "xstate": "^4.13.0"
   },
   "scripts": {
