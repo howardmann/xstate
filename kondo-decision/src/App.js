@@ -2,19 +2,9 @@ import React from 'react';
 import './App.css';
 import IssueList from './components/IssueList'
 import data from './db/issues'
-import { IntercomProvider, useIntercom } from 'react-use-intercom';
-
-const INTERCOM_APP_ID = 'enimgw35'
-const user = {
-  user_id: 'demo_user_id',
-  email: 'demo@email.com',
-  name: 'Dale Lecluse'
-}
 
 const App = () => (
-  <IntercomProvider autoBoot appId={INTERCOM_APP_ID}>
     <HomePage />
-  </IntercomProvider>
 )
 
 function HomePage() {
