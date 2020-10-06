@@ -2,6 +2,16 @@ import React from 'react';
 import {useMachine} from '@xstate/react'
 import actionMachine from '../stateMachines/actionMachine'
 
+import NewControl from './controls/NewControl'
+import InProgressControl from './controls/InProgressControl'
+import OnHoldControl from './controls/OnHoldControl'
+import NotDoingControl from './controls/NotDoingControl'
+import ResolvedControl from './controls/ResolvedControl'
+
+import ApproveButton from './actions/ApproveButton'
+import MailToButton from './actions/MailToButton'
+import EditButton from './actions/EditButton'
+import UpdateButton from './actions/UpdateButton'
 
 // const initialData = {
 //   name: 'Excessive operation',
@@ -22,66 +32,6 @@ const getColor = (status) => {
   }
   return colorIndex[status]
 }
-
-const MailToButton = ({send}) => {
-  return (
-    <a onClick={() => send('APPROVE')}>📧 Email Me Issue</a>
-  )
-}
-
-const EditButton = () => {
-  return (
-    <a onClick={() => alert('Open Edit Issue Form')}  className="btn bg-haze gray"> Edit Issue</a>
-  )
-}
-const ApproveButton = ({issue}) => {
-  return (
-    <a href={issue.mailto} className="btn btn-primary" target="_blank">✨ Approve ✨</a>    
-  )
-}
-
-const MoveToInbox = ({send}) => {
-  return (
-    <button className="btn bg-teal white opacity-80" onClick={() => send('MARK_UNREAD')}>Inbox</button>
-  )
-}
-
-const MoveToPrevious = ({send}) => {
-  return (
-    <button className="btn bg-lime white opacity-80" onClick={() => send('MARK_READ')}>Previous</button>
-  )
-}
-
-
-const ResolveButton = ({send}) => {
-  return (
-      <button className="btn btn-primary"
-      onClick={() => send('RESOLVED')}>Resolved</button>
-  )
-}
-
-const OnHoldButton = ({send}) => {
-  return (
-      <button className="btn bg-yellow gray opacity-70"
-      onClick={() => send('HOLD')}>On Hold</button>
-  )
-}
-
-const NotDoingButton = ({send}) => {
-  return (
-      <button className="btn bg-smoke gray opacity-70"
-      onClick={() => send('REJECT')}>Not Doing</button>
-  )
-}
-
-
-const UpdateButton = ({send}) => {
-  return (
-      <a className="btn bg-blue"
-      onClick={() => send('ADD_COMMENT')}>+ Add Comment</a>
-  )
-}
-
 
 const CommentInput = ({send, current}) => {  
   return (
@@ -137,10 +87,6 @@ const IssueCard = ({data, handleStatusChange}) => {
               {issue.status}
             </span>
           </div>          
-          {/* <p className={`fs-12 truncate ${getColor(issue.priority)}`}>
-            {issue.priority}
-          </p>
-          */}
         </div>
         <div className="col-10 phone-col-9 ">
           <div 
@@ -282,85 +228,23 @@ const IssueCard = ({data, handleStatusChange}) => {
               <div className="row mt-20">
 
                   {current.matches('actions.status.new') &&
-                    <div>
-                      <div className="col-6">
-                        <p className="fs-12 stone small mt-10">MOVE TO</p>              
-                        <OnHoldButton send={send}/>                        
-                        <NotDoingButton send={send}/>
-                      </div>
-                      <div className="col-6 right-align">
-                        <p className="fs-12 stone small mt-10">ACTION</p>
-                        <UpdateButton send={send}/>
-                      </div>
-                    </div>
+                    <NewControl send={send}/> 
                   }
 
                   {current.matches('actions.status.inProgress') &&
-                    <div>
-                      <div className="col-6">
-                        <p className="fs-12 stone small mt-10">MOVE TO</p>              
-                        {current.matches('category.previous') &&
-                          <MoveToInbox send={send}/>
-                        }
-                        {current.matches('category.inbox') &&
-                          <MoveToPrevious send={send}/>
-                        }
-
-                        <NotDoingButton send={send}/>
-                        <OnHoldButton send={send}/>
-                      </div>
-                      <div className="col-6 right-align">
-                        <p className="fs-12 stone small mt-10">ACTION</p>
-                        <ResolveButton send={send}/>
-                      </div>
-
-                    </div>
+                    <InProgressControl current={current} send={send}/>
                   }
 
                   {current.matches('actions.status.onHold') &&
-                    <div>
-                      <div className="col-6">
-                        <p className="fs-12 stone small mt-10">MOVE TO</p>              
-                        {current.matches('category.previous') &&
-                          <MoveToInbox send={send}/>
-                        }
-                        {current.matches('category.inbox') &&
-                          <MoveToPrevious send={send}/>
-                        }
-
-                        <NotDoingButton send={send}/>
-                      </div>
-                      <div className="col-6 right-align">
-                        <p className="fs-12 stone small mt-10">ACTION</p>
-                        <UpdateButton send={send}/>
-                      </div>
-                    </div>
+                    <OnHoldControl current={current} send={send}/>
                   }
 
                   {current.matches('actions.status.notDoing') &&
-                    <div>
-                      <div className="col-6">
-                        <p className="fs-12 stone small mt-10">MOVE TO</p>              
-                        {current.matches('category.previous') &&
-                          <MoveToInbox send={send}/>
-                        }
-                        {current.matches('category.inbox') &&
-                          <MoveToPrevious send={send}/>
-                        }
-
-                        <OnHoldButton send={send}/>
-                      </div>
-                      <div className="col-6 right-align">
-                        <p className="fs-12 stone small mt-10">ACTION</p>
-                        <UpdateButton send={send}/>
-                      </div>
-                    </div>
+                    <NotDoingControl current={current} send={send}/>
                   }
 
                   {current.matches('actions.status.resolved') &&
-                    <div className="col-12 right-align">
-                      <UpdateButton send={send}/>
-                    </div>
+                    <ResolvedControl current={current} send={send}/>
                   }
 
 
