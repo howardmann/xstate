@@ -84,7 +84,7 @@ const sortByStatus = (data) => {
 }
 
 
-const IssueList = ({data = initialData}) => {
+const IssueList = ({data}) => {  
   // React Issue State
   const [issues, setIssues] = React.useState(data)
   
@@ -102,6 +102,7 @@ const IssueList = ({data = initialData}) => {
     return issues.filter(el => el.category === 'inbox').length
   }
 
+  
   return (
     <>
       <div>
