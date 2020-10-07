@@ -9,7 +9,7 @@ export default ({issue}) => (
             width: '70px',
             height: '55px',
             backgroundPosition: 'center',
-            backgroundSize: 'cover'
+            backgroundSize: 'auto 140%'
         }}>
     </div>
 )
