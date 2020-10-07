@@ -28,9 +28,9 @@ const TicketRow = ({data, handleStatusChange}) => {
   useOnClickOutside(onClickOutsideRef, handleClose)
 
   return (
-    <div ref={onClickOutsideRef} className="row border-2 border-platinum rounded bg-white p-5 my-5">
+    <div ref={onClickOutsideRef} className="row cursor border-2 border-platinum rounded bg-white p-5 my-5">
         {/* LHS TICKET_ROW -> ASSIGNED LOGO + TICKET STATUS */}
-        <div onClick={() => send('TOGGLE')} className="col-2 phone-col-3 cursor">
+        <div onClick={() => send('TOGGLE')} className="col-2 phone-col-3">
           <div className="row">
             <AssignedLogo issue={issue}/>
           </div>
@@ -40,9 +40,9 @@ const TicketRow = ({data, handleStatusChange}) => {
         </div>
         
         {/* RHS TICKET_ROW -> ISSUE NAME, ASSIGNED, APPROVE BUTTON */}
-        <div className="col-10 phone-col-9 ">
+        <div onClick={() => send('TOGGLE')} className="col-10 phone-col-9 ">
           {/* ISSUE NAME */}
-          <div onClick={() => send('TOGGLE')} className="row cursor">
+          <div className="row">
             <p className="fs-14 gray truncate">
               {issue.name}
             </p>            
@@ -50,13 +50,13 @@ const TicketRow = ({data, handleStatusChange}) => {
 
           <div className="row">
             {/* ASSIGNED */}
-            <div onClick={() => send('TOGGLE')} className="col-8 phone-col-4 truncate cursor">
+            <div className="col-8 phone-col-4 truncate">
               <p className="fs-10 mt-5 stone small">ASSIGNED</p>
               <p className="truncate fs-14">{issue.assigned}</p>
             </div>
             
             {/* APPROVE BUTTON */}
-            <div className="col-4 phone-col-8 right-align mt-5">
+            <div style={{'zIndex': 200}} className="col-4 phone-col-8 right-align mt-5">
                 {(current.matches('actions.status.new') || current.matches('actions.status.onHold') || current.matches('actions.status.notDoing')) &&
                   <ApproveButton issue={issue}/>
                 }
