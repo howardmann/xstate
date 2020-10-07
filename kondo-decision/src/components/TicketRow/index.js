@@ -1,7 +1,6 @@
 import React from 'react';
 import {useMachine} from '@xstate/react'
 import actionMachine from '../../stateMachines/actionMachine'
-import useOnClickOutside from 'use-onclickoutside'
 
 import TicketStatus from './TicketStatus'
 import AssignedLogo from './AssignedLogo'
@@ -20,15 +19,8 @@ const TicketRow = ({data, handleStatusChange}) => {
   }, [current.context.status, current.context.category])
 
 
-  const handleClose = () => {
-    send('HIDE_ISSUE')
-  }
-  // detect onclickoutside library
-  const onClickOutsideRef = React.useRef(null)
-  useOnClickOutside(onClickOutsideRef, handleClose)
-
   return (
-    <div ref={onClickOutsideRef} className="row cursor border-2 border-platinum rounded bg-white p-5 my-5">
+    <div className="row cursor border-2 border-platinum rounded bg-white p-5 my-5">
         {/* LHS TICKET_ROW -> ASSIGNED LOGO + TICKET STATUS */}
         <div onClick={() => send('TOGGLE')} className="col-2 phone-col-3">
           <div className="row">
