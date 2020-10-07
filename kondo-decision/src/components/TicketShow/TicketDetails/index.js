@@ -1,6 +1,8 @@
 import React from 'react'
 import TicketExpanded from './TicketExpanded'
 import TicketPreview from './TicketPreview'
+import DownArrow from '../../../images/DownArrow'
+import UpArrow from '../../../images/UpArrow'
 
 export default ({issue, current, send}) => {
     return (
@@ -8,13 +10,13 @@ export default ({issue, current, send}) => {
             {/* EXPAND/ HIDE CONTROLS */}
             <span style={{position: 'absolute', top: '5px', right: '5px'}}>
                 {current.matches('details.preview') && 
-                <>{'\u2195'}</>
+                <UpArrow/>
                 }
                 {current.matches('details.expanded') &&
-                <>{'\u2191'}</>
+                <DownArrow/>
                 }                
             </span>
-
+            
             {current.matches('details.preview') &&
                 <TicketPreview issue={issue}/>
                 
