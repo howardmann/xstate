@@ -4,6 +4,7 @@ import actionMachine from '../../stateMachines/actionMachine'
 
 import TicketStatus from './TicketStatus'
 import AssignedLogo from './AssignedLogo'
+import AssigneeAction from './AssigneeAction'
 import TicketShow from '../TicketShow'
 import EmailForm from '../EmailForm'
 import ApproveButton from '../actions/ApproveButton'
@@ -41,21 +42,11 @@ const TicketRow = ({data, handleStatusChange}) => {
               {issue.name}
             </p>            
           </div>
-
+        
+          {/* ASSIGNEE NAME & APPROVE ACTION for New, OnHold & NotDoing */}
           <div className="row">
-            {/* ASSIGNED */}
-            <div className="col-8 phone-col-4 truncate">
-              <p className="fs-10 mt-5 stone small">ASSIGNED</p>
-              <p className="truncate fs-14">{issue.assigned}</p>
-            </div>
-            
-            {/* APPROVE BUTTON */}
-            <div style={{'zIndex': 200}} className="col-4 phone-col-8 right-align mt-5">
-                {(current.matches('actions.status.new') || current.matches('actions.status.onHold') || current.matches('actions.status.notDoing')) &&
-                  <ApproveButton issue={issue}/>
-                }
-            </div>
-          </div>            
+            <AssigneeAction issue={issue} current={current} send={send}/>
+          </div>                      
         </div>
       
       </div>
