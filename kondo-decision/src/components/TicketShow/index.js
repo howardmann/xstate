@@ -2,14 +2,14 @@ import React from 'react';
 
 import TicketDetails from './TicketDetails'
 import TicketControls from './TicketControls'
-
+import Comments from './Comments'
 
 const TicketShow = ({issue, current, send}) => {
     return (
         <div>
             {/* Comments placeholder */}
             <div className="row my-5 border rounded p-5">
-                <p>Comments placeholder</p>
+                <Comments/>
             </div>
 
             {/* Ticket Details */}

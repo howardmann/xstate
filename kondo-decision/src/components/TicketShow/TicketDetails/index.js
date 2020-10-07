@@ -10,10 +10,10 @@ export default ({issue, current, send}) => {
             {/* EXPAND/ HIDE CONTROLS */}
             <span style={{position: 'absolute', top: '5px', right: '5px'}}>
                 {current.matches('details.preview') && 
-                <UpArrow/>
+                <DownArrow/>
                 }
                 {current.matches('details.expanded') &&
-                <DownArrow/>
+                <UpArrow/>
                 }                
             </span>
             

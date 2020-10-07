@@ -76,14 +76,17 @@ const TicketRow = ({data, handleStatusChange}) => {
         <div className="row">
           {/* TicketShow */}
           {current.matches('issue.active') &&
-            <TicketShow issue={issue} current={current} send={send}/>
+            <div className="pt-5">
+              <TicketShow issue={issue} current={current} send={send}/>
+            </div>
           }
 
           {/* EmailForm */}
           {current.matches('actions.email') && 
-            <EmailForm issue={issue} send={send}/>
+            <div className="pt-5">
+              <EmailForm issue={issue} send={send}/>
+            </div>
           }
-
         </div>
 
     </div>
