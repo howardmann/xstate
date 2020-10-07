@@ -2,16 +2,16 @@ import React from 'react';
 import {useMachine} from '@xstate/react'
 import actionMachine from '../../stateMachines/actionMachine'
 
-import NewControl from '../controls/NewControl'
-import InProgressControl from '../controls/InProgressControl'
-import OnHoldControl from '../controls/OnHoldControl'
-import NotDoingControl from '../controls/NotDoingControl'
-import ResolvedControl from '../controls/ResolvedControl'
+import NewControl from './details/controls/NewControl'
+import InProgressControl from './details/controls/InProgressControl'
+import OnHoldControl from './details/controls/OnHoldControl'
+import NotDoingControl from './details/controls/NotDoingControl'
+import ResolvedControl from './details/controls/ResolvedControl'
 
-import ApproveButton from '../actions/ApproveButton'
-import MailToButton from '../actions/MailToButton'
-import EditButton from '../actions/EditButton'
-import UpdateButton from '../actions/UpdateButton'
+import ApproveButton from './actions/ApproveButton'
+import MailToButton from './actions/MailToButton'
+import EditButton from './actions/EditButton'
+import UpdateButton from './actions/UpdateButton'
 
 // const initialData = {
 //   name: 'Excessive operation',

@@ -1,5 +1,5 @@
 import React from 'react'
-import UpdateButton from '../actions/UpdateButton'
+import UpdateButton from '../../actions/UpdateButton'
 
 export default ({current, send}) => {
     return (

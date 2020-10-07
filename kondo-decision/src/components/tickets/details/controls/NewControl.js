@@ -1,7 +1,7 @@
 import React from 'react'
-import OnHoldButton from '../actions/OnHoldButton'
-import NotDoingButton from '../actions/NotDoingButton'
-import UpdateButton from '../actions/UpdateButton'
+import OnHoldButton from '../../actions/OnHoldButton'
+import NotDoingButton from '../../actions/NotDoingButton'
+import UpdateButton from '../../actions/UpdateButton'
 
 export default ({send}) => {
     return (

@@ -1,8 +1,8 @@
 import React from 'react'
-import MoveToInbox from '../actions/MoveToInbox'
-import MoveToPrevious from '../actions/MoveToPrevious'
-import NotDoingButton from '../actions/NotDoingButton'
-import UpdateButton from '../actions/UpdateButton'
+import MoveToInbox from '../../actions/MoveToInbox'
+import MoveToPrevious from '../../actions/MoveToPrevious'
+import NotDoingButton from '../../actions/NotDoingButton'
+import UpdateButton from '../../actions/UpdateButton'
 
 export default ({current, send}) => {
     return (
