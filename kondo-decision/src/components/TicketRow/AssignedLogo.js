@@ -1,5 +1,15 @@
 import React from 'react'
 
 export default ({issue}) => (
-    <img height="40" src={issue.companyLogo} alt=""/>    
+    
+    // <img height="50" src={issue.companyLogo} alt=""/>    
+    <div
+        style={{
+            backgroundImage: `url("${issue.companyLogo}")`,
+            width: '70px',
+            height: '55px',
+            backgroundPosition: 'center',
+            backgroundSize: 'cover'
+        }}>
+    </div>
 )

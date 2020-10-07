@@ -21,8 +21,10 @@ const TicketRow = ({data, handleStatusChange}) => {
 
   return (
     <div className="row cursor border-2 border-platinum rounded bg-white p-5 my-5">
+      {/* TICKET ROW */}
+      <div style={{display: 'flex'}}>
         {/* LHS TICKET_ROW -> ASSIGNED LOGO + TICKET STATUS */}
-        <div onClick={() => send('TOGGLE')} className="col-2 phone-col-3">
+        <div onClick={() => send('TOGGLE')} style={{width: '88px', flexShrink: 0}}>
           <div className="row">
             <AssignedLogo issue={issue}/>
           </div>
@@ -32,7 +34,7 @@ const TicketRow = ({data, handleStatusChange}) => {
         </div>
         
         {/* RHS TICKET_ROW -> ISSUE NAME, ASSIGNED, APPROVE BUTTON */}
-        <div onClick={() => send('TOGGLE')} className="col-10 phone-col-9 ">
+        <div onClick={() => send('TOGGLE')} className="col-12 ">
           {/* ISSUE NAME */}
           <div className="row">
             <p className="fs-14 gray truncate">
@@ -55,7 +57,8 @@ const TicketRow = ({data, handleStatusChange}) => {
             </div>
           </div>            
         </div>
-
+      
+      </div>
         {/* XSTATE DEBUGGING */}
         {/* <small>
           <p>current.value: {JSON.stringify(current.value)}</p>
