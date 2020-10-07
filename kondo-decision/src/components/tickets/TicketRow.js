@@ -1,17 +1,17 @@
 import React from 'react';
 import {useMachine} from '@xstate/react'
-import actionMachine from '../stateMachines/actionMachine'
+import actionMachine from '../../stateMachines/actionMachine'
 
-import NewControl from './controls/NewControl'
-import InProgressControl from './controls/InProgressControl'
-import OnHoldControl from './controls/OnHoldControl'
-import NotDoingControl from './controls/NotDoingControl'
-import ResolvedControl from './controls/ResolvedControl'
+import NewControl from '../controls/NewControl'
+import InProgressControl from '../controls/InProgressControl'
+import OnHoldControl from '../controls/OnHoldControl'
+import NotDoingControl from '../controls/NotDoingControl'
+import ResolvedControl from '../controls/ResolvedControl'
 
-import ApproveButton from './actions/ApproveButton'
-import MailToButton from './actions/MailToButton'
-import EditButton from './actions/EditButton'
-import UpdateButton from './actions/UpdateButton'
+import ApproveButton from '../actions/ApproveButton'
+import MailToButton from '../actions/MailToButton'
+import EditButton from '../actions/EditButton'
+import UpdateButton from '../actions/UpdateButton'
 
 // const initialData = {
 //   name: 'Excessive operation',
@@ -58,7 +58,7 @@ const CommentInput = ({send, current}) => {
   )
 }
 
-const IssueCard = ({data, handleStatusChange}) => {  
+const TicketRow = ({data, handleStatusChange}) => {  
   const issue = data
   // xState machine with initial context of issue status
   const [current, send] = useMachine(actionMachine.withContext({status: issue.status, category: issue.category, comment: ''}))
@@ -70,9 +70,11 @@ const IssueCard = ({data, handleStatusChange}) => {
 
   return (
     <div className="row border-2 border-platinum rounded bg-white p-5 my-5">
+        {/* LHS ROW -> LOGO ASSIGNEE & PRIORITY */}
         <div 
           onClick={() => send('TOGGLE')}
-          className="col-2 phone-col-3 cursor">
+          className="col-2 phone-col-3 cursor"
+        >
           <div className="row">
               <img height="40" src={issue.companyLogo} alt=""/>
           </div>
@@ -83,12 +85,14 @@ const IssueCard = ({data, handleStatusChange}) => {
               {(issue.priority === 'Urgent') && 
                 <span> ⚠️ </span>
               }
-
               {issue.status}
             </span>
           </div>          
         </div>
+        
+        {/* RHS ROW */}
         <div className="col-10 phone-col-9 ">
+          {/* ISSUE NAME */}
           <div 
             onClick={() => send('TOGGLE')} 
             className="row cursor"
@@ -97,16 +101,17 @@ const IssueCard = ({data, handleStatusChange}) => {
               {issue.name}
             </p>            
           </div>
+          {/* ASSIGNED */}
           <div className="row">
             <div 
               onClick={() => send('TOGGLE')} 
               className="col-8 phone-col-4 truncate cursor">
               <p className="fs-10 mt-5 stone small">ASSIGNED</p>
               <p className="truncate fs-14">{issue.assigned}</p>
-
             </div>
+            
+            {/* TICKET ROW ACTION BUTTONS */}
             <div className="col-4 phone-col-8">
-              {/* ACTION BUTTONS */}
               <div className="right-align mt-5">
                 {current.matches('actions.status.new') &&
                   <div>
@@ -134,14 +139,17 @@ const IssueCard = ({data, handleStatusChange}) => {
               </div>
             </div>
           </div>
-
+          
+          {/* NOTE: REPLACE WITH COMMENTS */}
           <div className="row">
+            {/* Comment Input Box */}
             {current.matches('actions.comment') &&
               <div className="right-align">
                 <CommentInput send={send} current={current}/>
               </div>
             }
 
+            {/* Email Input Box */}
             {current.matches('actions.email') && 
               <div className="left-align p-5 border">
                 <h3 className="center">Send Email</h3>
@@ -167,9 +175,11 @@ const IssueCard = ({data, handleStatusChange}) => {
               </div>
             }
           </div>
-
+          
+          {/* TicketShow */}
           {current.matches('issue.active') &&
             <div>
+              {/* Issue Details */}
               <div
                  className="row cursor"
                 onClick={() => send('TOGGLE')}            
@@ -183,24 +193,26 @@ const IssueCard = ({data, handleStatusChange}) => {
                 <p className="fs-12 stone small mt-10">EQUIPMENT</p>
                 <p className="fs-14">{issue.equipment}</p>            
                 {issue.tenants.length > 0 &&
-                <>
-                  <p className="fs-12 stone small mt-10">TENANTS AFFECTED</p>              
-                  <p className="fs-14">{issue.tenants}</p>
-                </>
+                  <>
+                    <p className="fs-12 stone small mt-10">TENANTS AFFECTED</p>              
+                    <p className="fs-14">{issue.tenants}</p>
+                  </>
                 }
 
                 <p className="fs-12 stone small mt-10">ISSUE RAISED</p>
                 <p className="fs-14">{issue.raised}</p>            
 
+                {/* Issue Comments */}
                 {issue.comments && 
-                <>
-                  <p className="fs-12 stone small mt-10">COMMENTS</p>
-                  <p className="fs-14">{issue.comments}</p>            
-                </>                
+                  <>
+                    <p className="fs-12 stone small mt-10">COMMENTS</p>
+                    <p className="fs-14">{issue.comments}</p>            
+                  </>                
                 }
 
               </div>              
               
+              {/* Attachments */}
               <div className="row">
                 {issue.attachments && <p className="fs-12 stone small mt-10">ATTACHMENTS</p>}
                 {(issue.attachments) &&
@@ -213,6 +225,7 @@ const IssueCard = ({data, handleStatusChange}) => {
                 }
               </div>
               
+              {/* Edit & Email button */}
               <div className="row mt-20">
                   <div className="col-6">
                     <EditButton/>
@@ -225,8 +238,9 @@ const IssueCard = ({data, handleStatusChange}) => {
                   </div>
                 
               </div>
+              
+              {/* Status Controls */}
               <div className="row mt-20">
-
                   {current.matches('actions.status.new') &&
                     <NewControl send={send}/> 
                   }
@@ -246,8 +260,6 @@ const IssueCard = ({data, handleStatusChange}) => {
                   {current.matches('actions.status.resolved') &&
                     <ResolvedControl current={current} send={send}/>
                   }
-
-
               </div>              
             </div>
           }
@@ -264,4 +276,4 @@ const IssueCard = ({data, handleStatusChange}) => {
   )
 }
 
-export default IssueCard
+export default TicketRow

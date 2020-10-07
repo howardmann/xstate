@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import IssueList from './components/IssueList'
+import IssuesBoard from './components/IssuesBoard'
 // import data from './db/issues'
 import {listIssues} from './data-access/issues-db'
 
@@ -46,7 +46,7 @@ function HomePage() {
             </div>
           </div>
           {
-            (data.length > 0) ? <IssueList data={data}/> : <div>Loading...</div>
+            (data.length > 0) ? <IssuesBoard data={data}/> : <div>Loading...</div>
           }
 
         </div>      

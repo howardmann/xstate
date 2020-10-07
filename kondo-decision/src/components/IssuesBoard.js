@@ -1,5 +1,5 @@
 import React from 'react';
-import IssueCard from './IssueCard'
+import TicketRow from './tickets/TicketRow'
 import {sortBy} from 'lodash';
 
 const initialData = [
@@ -84,7 +84,7 @@ const sortByStatus = (data) => {
 }
 
 
-const IssueList = ({data}) => {  
+const IssuesBoard = ({data}) => {  
   // React Issue State
   const [issues, setIssues] = React.useState(data)
   
@@ -107,7 +107,7 @@ const IssueList = ({data}) => {
     <>
       <div>
           <h3>Inbox</h3>
-          {sortByStatus(issues).filter(el => el.category === 'inbox').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
+          {sortByStatus(issues).filter(el => el.category === 'inbox').map(issue => <TicketRow key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
           {!hasInbox() && 
           <div style={{margin: '15px', padding: '15px', textAlign: 'center'}}>
             <p>✨ Nothing new for you ✨</p>
@@ -118,10 +118,10 @@ const IssueList = ({data}) => {
       <hr/>
       <div style={{marginTop: '20px'}}>
           <h3>Previous</h3>
-          {sortByStatus(issues).filter(el => el.category === 'previous').map(issue => <IssueCard key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
+          {sortByStatus(issues).filter(el => el.category === 'previous').map(issue => <TicketRow key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
       </div>
     </>
   )
 }
 
-export default IssueList
+export default IssuesBoard

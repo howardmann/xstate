@@ -1,9 +1,9 @@
 import React from 'react'
-import OnHoldButton from '../actions/OnHoldButton'
-import NotDoingButton from '../actions/NotDoingButton'
-import MoveToPrevious from '../actions/MoveToPrevious'
-import MoveToInbox from '../actions/MoveToInbox'
-import ResolveButton from '../actions/ResolveButton'
+import OnHoldButton from '../../actions/OnHoldButton'
+import NotDoingButton from '../../actions/NotDoingButton'
+import MoveToPrevious from '../../actions/MoveToPrevious'
+import MoveToInbox from '../../actions/MoveToInbox'
+import ResolveButton from '../../actions/ResolveButton'
 
 export default ({current, send}) => {
     return (
