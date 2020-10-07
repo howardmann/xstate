@@ -1,8 +1,10 @@
 import React from 'react'
+import EditButton from '../../../actions/EditButton'
 
 export default ({current, send}) => {
     return (
-        <div className="col-12 right-align">
+        <div>
+            <EditButton/>
         </div>
     )
 }
