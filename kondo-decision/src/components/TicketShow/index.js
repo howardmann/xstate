@@ -11,8 +11,9 @@ const TicketShow = ({issue, current, send}) => {
             <div className="row my-5 border rounded p-5">
                 <p>Comments placeholder</p>
             </div>
+
             {/* Ticket Details */}
-            <div className="row cursor border rounded p-5" onClick={() => send('TOGGLE')}>
+            <div className="row cursor border rounded p-5">
                 <TicketDetails issue={issue} current={current} send={send}/>
             </div>
             

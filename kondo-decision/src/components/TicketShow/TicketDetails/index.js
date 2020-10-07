@@ -1,37 +1,29 @@
 import React from 'react'
-
+import TicketExpanded from './TicketExpanded'
+import TicketPreview from './TicketPreview'
 
 export default ({issue, current, send}) => {
     return (
-        <div> 
-            <p className="fs-12 stone small mt-10">⚠️ DESCRIPTION</p>
-            <p className="fs-14">{issue.description}</p>
-            <p className="fs-12 stone small mt-10">✅ SOLUTION</p>
-            <p className="fs-14">{issue.solution}</p>
-            <p className="fs-12 stone small mt-10">IMPROVE</p>
-            <p className="fs-14">{issue.benefit}</p>            
-            <p className="fs-12 stone small mt-10">EQUIPMENT</p>
-            <p className="fs-14">{issue.equipment}</p>            
-            {issue.tenants.length > 0 &&
-                <>
-                <p className="fs-12 stone small mt-10">TENANTS AFFECTED</p>              
-                <p className="fs-14">{issue.tenants}</p>
-                </>
+        <div onClick={() => send('TOGGLE_DETAILS')}>
+            {/* EXPAND/ HIDE CONTROLS */}
+            <span style={{position: 'absolute', top: '5px', right: '5px'}}>
+                {current.matches('details.preview') && 
+                <>{'\u2195'}</>
+                }
+                {current.matches('details.expanded') &&
+                <>{'\u2191'}</>
+                }                
+            </span>
+
+            {current.matches('details.preview') &&
+                <TicketPreview issue={issue}/>
+                
             }
 
-            <p className="fs-12 stone small mt-10">ISSUE RAISED</p>
-            <p className="fs-14">{issue.raised}</p>      
-            
-            {/* ATTACHMENTS */}
-            {issue.attachments && <p className="fs-12 stone small mt-10">ATTACHMENTS</p>}
-            {(issue.attachments) &&
-                issue.attachments.map(el => {
-                return <a href={el} target="_blank">
-                    <img height="80" src={el}/>
-                </a>
-                })
+            {current.matches('details.expanded') &&
+                <TicketExpanded issue={issue}/>
             }
-        </div>              
+        </div>
 
     )
 }

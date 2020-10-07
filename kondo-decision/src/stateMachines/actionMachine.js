@@ -64,12 +64,36 @@ const actionMachine = Machine({
         },
         active: {
           on: {
-            TOGGLE: 'inactive'
+            TOGGLE: {
+              target: 'inactive',
+              actions: [send('HIDE_DETAILS')]
+            }
           }
         }
       },
       on: {
-        HIDE_ISSUE: 'issue.inactive'
+        HIDE_ISSUE: {
+          target: 'issue.inactive',
+          actions: [send('HIDE_DETAILS')]
+        }
+      }
+    },
+    details: {
+      initial: 'preview',
+      states: {
+        preview: {
+          on: {
+            TOGGLE_DETAILS: 'expanded'
+          }
+        },
+        expanded: {
+          on: {
+            TOGGLE_DETAILS: 'preview'
+          }
+        }
+      },
+      on: {
+        HIDE_DETAILS: 'details.preview'
       }
     },
     actions: {

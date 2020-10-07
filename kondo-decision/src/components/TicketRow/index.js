@@ -1,6 +1,7 @@
 import React from 'react';
 import {useMachine} from '@xstate/react'
 import actionMachine from '../../stateMachines/actionMachine'
+import useOnClickOutside from 'use-onclickoutside'
 
 import TicketStatus from './TicketStatus'
 import AssignedLogo from './AssignedLogo'
@@ -18,8 +19,16 @@ const TicketRow = ({data, handleStatusChange}) => {
     handleStatusChange({id: issue.id, status: current.context.status, category: current.context.category})
   }, [current.context.status, current.context.category])
 
+
+  const handleClose = () => {
+    send('HIDE_ISSUE')
+  }
+  // detect onclickoutside library
+  const onClickOutsideRef = React.useRef(null)
+  useOnClickOutside(onClickOutsideRef, handleClose)
+
   return (
-    <div className="row border-2 border-platinum rounded bg-white p-5 my-5">
+    <div ref={onClickOutsideRef} className="row border-2 border-platinum rounded bg-white p-5 my-5">
         {/* LHS TICKET_ROW -> ASSIGNED LOGO + TICKET STATUS */}
         <div onClick={() => send('TOGGLE')} className="col-2 phone-col-3 cursor">
           <div className="row">
@@ -55,6 +64,14 @@ const TicketRow = ({data, handleStatusChange}) => {
           </div>            
         </div>
 
+        {/* XSTATE DEBUGGING */}
+        {/* <small>
+          <p>current.value: {JSON.stringify(current.value)}</p>
+          <p>current.context: {JSON.stringify(current.context)}</p>
+        </small>               */}
+
+
+
         {/* TICKET SHOW */}
         <div className="row">
           {/* TicketShow */}
@@ -69,12 +86,6 @@ const TicketRow = ({data, handleStatusChange}) => {
 
         </div>
 
-        {/* <p>Status: {issue.actions.status}</p> */}
-
-        {/* <small>
-          <p>current.value: {JSON.stringify(current.value)}</p>
-          <p>current.context: {JSON.stringify(current.context)}</p>
-        </small>               */}
     </div>
   )
 }

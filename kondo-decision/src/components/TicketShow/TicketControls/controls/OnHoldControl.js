@@ -3,6 +3,7 @@ import MoveToInbox from '../../../actions/MoveToInbox'
 import MoveToPrevious from '../../../actions/MoveToPrevious'
 import NotDoingButton from '../../../actions/NotDoingButton'
 import EditButton from '../../../actions/EditButton'
+import MailToButton from '../../../actions/MailToButton'
 
 export default ({current, send}) => {
     return (
@@ -15,6 +16,7 @@ export default ({current, send}) => {
             }
             <NotDoingButton send={send}/>
             <EditButton send={send}/>
+            <MailToButton send={send}/>            
       </div>
     )
 }
