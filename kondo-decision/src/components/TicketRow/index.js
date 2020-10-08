@@ -11,6 +11,7 @@ import UpArrow from '../../images/UpArrow'
 
 const TicketRow = ({data, handleStatusChange}) => {  
   const issue = data
+
   // xState machine with initial context of issue status
   const [current, send] = useMachine(actionMachine.withContext({status: issue.status, category: issue.category, hasComments: false}))
 

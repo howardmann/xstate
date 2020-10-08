@@ -16,7 +16,7 @@ export default ({current, send, issue, comments}) => {
                 </div>
             }                        
             
-            <CommentList comments={comments} issue={issue}/>
+            {comments && <CommentList comments={comments} issue={issue}/>}
             
         </div>
 
