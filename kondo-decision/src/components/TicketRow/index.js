@@ -22,6 +22,7 @@ const TicketRow = ({data, handleStatusChange}) => {
 
 
   return (
+    <div className={current.matches('issue.active') ? 'modal': null}>
     <div key={issue.id} className="row cursor border-2 border-platinum border-stone-hover rounded bg-white p-5 my-5">
       {/* EXPAND/ HIDE CONTROLS */}
       <span style={{position: 'absolute', top: '5px', right: '5px'}}>
@@ -64,8 +65,6 @@ const TicketRow = ({data, handleStatusChange}) => {
           <p>current.context: {JSON.stringify(current.context)}</p>
         </small>               */}
 
-
-
         {/* TICKET SHOW */}
         <div className="row">
           {/* TicketShow */}
@@ -83,6 +82,7 @@ const TicketRow = ({data, handleStatusChange}) => {
           }
         </div>
 
+    </div>
     </div>
   )
 }
