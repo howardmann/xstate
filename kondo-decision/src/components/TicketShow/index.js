@@ -9,7 +9,7 @@ const TicketShow = ({issue, current, send}) => {
         <div>
             {/* Comments placeholder */}
             <div className="row my-5 border rounded p-5">
-                <Comments current={current} send={send}/>
+                <Comments issue={issue} current={current} send={send}/>
             </div>
 
             {/* Ticket Details */}

@@ -1,8 +1,10 @@
 import React from 'react'
 import FormNew from './FormNew'
 import FormPlaceholder from './FormPlaceholder'
+import CommentList from './CommentList'
 
-export default ({current, send}) => {
+
+export default ({current, send, issue, comments}) => {
     return (
         <div>
             {current.matches('comments.expanded.formNew') &&
@@ -13,7 +15,8 @@ export default ({current, send}) => {
                     <FormPlaceholder current={current} send={send}/>
                 </div>
             }                        
-            <p>List of comments goes below here</p>
+            
+            <CommentList comments={comments} issue={issue}/>
             
         </div>
 

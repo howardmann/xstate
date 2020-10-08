@@ -8,7 +8,7 @@ let listComments = () => {
 let findCommentsByIssueId = (id) => {
     let comments = serialize(COMMENTS)
     let commentsArr = comments.filter(el => el["issue_id"] === id)
-    return Promise.result(commentsArr)
+    return Promise.resolve(commentsArr)
 }
 
 module.exports = {

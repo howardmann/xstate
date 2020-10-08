@@ -4,7 +4,7 @@ const _serializeSingle = (comment) => {
         'issue_id': comment["record_id (from issues)"],
         'author': comment.Contact,
         'author_logo': comment["kondo_contact_logo"],
-        'comment': comment.comment,
+        'comment': comment.Comment,
         'date': comment.date
     }
 }

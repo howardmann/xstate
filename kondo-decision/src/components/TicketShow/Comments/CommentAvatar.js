@@ -1,6 +1,8 @@
 import React from 'react'
 
-export default () => (
+const CIM_URL = "https://dl.airtable.com/.attachments/109d5ff9630bc775ebc23a68ed9ef7c7/2f303f40/ScreenShot2020-07-31at3.56.57pm.png"
+
+export default ({url = CIM_URL}) => (
     <img
     style={{
         objectFit: 'cover',
@@ -12,5 +14,5 @@ export default () => (
         marginRight: '8px',
         flexShrink: 0
     }}    
-    src="https://dl.airtable.com/.attachments/109d5ff9630bc775ebc23a68ed9ef7c7/2f303f40/ScreenShot2020-07-31at3.56.57pm.png"/>
+    src={url}/>
 )
