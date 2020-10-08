@@ -9,13 +9,17 @@ export default ({issue, send}) => (
         <p className="fs-12 stone small mt-10">✅ SOLUTION</p>
         <p className="fs-14">{truncateWords(issue.solution, 19)}</p>
         <div className="row">
-            <div className="col-6">
+            <div className="col-4 truncate">
                 <p className="fs-12 stone small mt-10">IMPROVE</p>
                 <Tag name={issue.benefit}/>
             </div>
-            <div className="col-6">
+            <div className="col-4 truncate">
                 <p className="fs-12 stone small mt-10">PRIORITY</p>
                 <Tag name={issue.priority}/>
+            </div>
+            <div className="col-4 truncate">
+                <p className="fs-12 stone small mt-10">CREATED</p>
+                <p className="fs-14">{issue.raised}</p>
             </div>
         </div>
     </div>              
