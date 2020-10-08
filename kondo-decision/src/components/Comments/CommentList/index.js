@@ -1,5 +1,4 @@
 import React from 'react'
-import CommentAvatar from './CommentAvatar'
 import CommentRow from './CommentRow'
 
 const CommentList = ({comments}) => {

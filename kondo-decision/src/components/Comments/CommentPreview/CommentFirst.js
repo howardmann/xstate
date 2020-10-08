@@ -1,5 +1,5 @@
 import React from 'react'
-import CommentAvatar from './CommentAvatar'
+import CommentAvatar from '../CommentAvatar'
 import truncateWords from '../../../util/truncateWords'
 
 export default ({current, send, comments}) => {

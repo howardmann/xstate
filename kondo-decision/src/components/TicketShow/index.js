@@ -2,7 +2,7 @@ import React from 'react';
 
 import TicketDetails from './TicketDetails'
 import TicketControls from './TicketControls'
-import Comments from './Comments'
+import Comments from '../Comments'
 
 const TicketShow = ({issue, current, send}) => {
     return (

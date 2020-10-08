@@ -1,5 +1,5 @@
 import React from 'react'
-import CommentAvatar from './CommentAvatar'
+import CommentAvatar from '../CommentAvatar'
 
 
 const CommentRow = ({comment}) => {

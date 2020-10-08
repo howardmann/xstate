@@ -1,5 +1,5 @@
 import React from 'react'
-import CommentAvatar from './CommentAvatar.js'
+import CommentAvatar from '../CommentAvatar/index.js'
 
 export default ({current, send}) => {
     return (

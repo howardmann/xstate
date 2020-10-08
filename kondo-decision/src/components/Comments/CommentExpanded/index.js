@@ -1,7 +1,7 @@
 import React from 'react'
-import FormNew from './FormNew'
-import FormPlaceholder from './FormPlaceholder'
-import CommentList from './CommentList'
+import FormNew from '../Form/FormNew'
+import FormPlaceholder from '../Form/FormPlaceholder'
+import CommentList from '../CommentList'
 
 
 export default ({current, send, issue, comments}) => {
@@ -16,9 +16,7 @@ export default ({current, send, issue, comments}) => {
                 </div>
             }                        
             
-            {comments && <CommentList comments={comments} issue={issue}/>}
-            
+            {comments && <CommentList comments={comments} issue={issue}/>}            
         </div>
-
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import FormPlaceholder from './FormPlaceholder'
+import FormPlaceholder from '../Form/FormPlaceholder'
 import CommentFirst from './CommentFirst'
 
 export default ({current, send, comments}) => {

@@ -1,9 +1,9 @@
 import React from 'react'
-import UpArrow from '../../../images/UpArrow'
-import DownArrow from '../../../images/DownArrow'
+import UpArrow from '../../images/UpArrow'
+import DownArrow from '../../images/DownArrow'
 import CommentPreview from './CommentPreview'
 import CommentExpanded from './CommentExpanded'
-import {findCommentsByIssueId} from '../../../data-access/comments-db/index'
+import {findCommentsByIssueId} from '../../data-access/comments-db/index'
 
 export default ({current, send, issue}) => {
     const [comments, setComments] = React.useState({})
