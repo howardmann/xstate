@@ -18,8 +18,7 @@ export default ({issue, current, send}) => {
             </span>
             
             {current.matches('details.preview') &&
-                <TicketPreview issue={issue} send={send}/>
-                
+                <TicketPreview issue={issue} send={send}/>                
             }
 
             {current.matches('details.expanded') &&
