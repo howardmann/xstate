@@ -13,7 +13,7 @@ const actionMachine = Machine({
   type: 'parallel',
   context: {
     status: 'In Progress',
-    comment: '',
+    hasComments: false,
     category: 'previous'
   },
   states: {
@@ -66,7 +66,7 @@ const actionMachine = Machine({
           on: {
             TOGGLE: {
               target: 'inactive',
-              actions: [send('HIDE_DETAILS')]
+              actions: [send('HIDE_DETAILS'), send('HIDE_COMMENTS')]
             }
           }
         }
@@ -74,7 +74,7 @@ const actionMachine = Machine({
       on: {
         HIDE_ISSUE: {
           target: 'issue.inactive',
-          actions: [send('HIDE_DETAILS')]
+          actions: [send('HIDE_DETAILS'), send('HIDE_COMMENTS')]
         }
       }
     },
@@ -83,7 +83,10 @@ const actionMachine = Machine({
       states: {
         preview: {
           on: {
-            TOGGLE_DETAILS: 'expanded'
+            TOGGLE_DETAILS: {
+              target: 'expanded',
+              actions: [send('HIDE_COMMENTS')]
+            }
           }
         },
         expanded: {
@@ -96,15 +99,70 @@ const actionMachine = Machine({
         HIDE_DETAILS: 'details.preview'
       }
     },
+    comments: {
+      initial: 'preview',
+      states: {
+        preview: {
+          initial: 'load',
+          states: {
+            load: {
+              on: {
+                "": [{
+                  target: 'comment',
+                  cond: ctx => ctx.hasComments === true
+                }, {
+                  target: 'formPlaceholder',
+                  cond: ctx => ctx.hasComments === false
+                }]
+          }              
+            },
+            comment: {},
+            formPlaceholder: {
+              on: {
+                FOCUS: '#machine.comments.expanded.formNew'
+              }
+            }
+          },
+          on: {
+            TOGGLE_COMMENTS: {
+              target: 'expanded',
+              actions: [send('HIDE_DETAILS')]
+            }
+          }
+        },
+        expanded: {
+          initial: 'formPlaceholder',
+          states: {
+            formPlaceholder: {
+              on: {
+                FOCUS: 'formNew'
+              }
+            },
+            formNew: {
+              on: {
+                CANCEL: 'formPlaceholder',
+                SUBMIT_COMMENT: {
+                  target: 'formPlaceholder',
+                  actions: (ctx, evt) => ctx.hasComments = true
+                }
+              }
+            }
+          },
+          on: {
+            TOGGLE_COMMENTS: 'preview'
+          }
+        }
+      },
+      on: {
+        HIDE_COMMENTS: 'comments.preview'
+      }
+    },
     actions: {
       initial: 'status',
       states: {
         status: {
           initial: 'load',
           entry: send('HIDE_ISSUE'),
-          on: {
-            ADD_COMMENT: '#machine.actions.comment.general'
-          },
           states: {
             load: {
               on: {
@@ -195,28 +253,6 @@ const actionMachine = Machine({
               entry: assign({
                 status: 'Resolved'
               })
-            }
-          }
-        },
-        comment: {
-          initial: 'general',
-          entry: send('HIDE_ISSUE'),
-          on: {
-            CLOSE: 'status',
-            UPDATE_COMMENT: {
-              actions: assign({
-                comment: (_ctx, evt) => evt.comment
-              })
-            }
-          },
-          states: {
-            general: {
-              on: {
-                SUBMIT: {
-                  target: '#machine.actions.status',
-                  actions: send('MARK_READ')
-                }
-              }
             }
           }
         },

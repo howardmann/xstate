@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default () => {
+export default ({current, send}) => {
     return (
         <div style={{display: 'flex'}} className="row pl-5">
             <img

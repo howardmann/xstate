@@ -7,12 +7,11 @@ import AssignedLogo from './AssignedLogo'
 import AssigneeAction from './AssigneeAction'
 import TicketShow from '../TicketShow'
 import EmailForm from '../EmailForm'
-import ApproveButton from '../actions/ApproveButton'
 
 const TicketRow = ({data, handleStatusChange}) => {  
   const issue = data
   // xState machine with initial context of issue status
-  const [current, send] = useMachine(actionMachine.withContext({status: issue.status, category: issue.category, comment: ''}))
+  const [current, send] = useMachine(actionMachine.withContext({status: issue.status, category: issue.category, hasComments: false}))
 
   // Update React State when change to xState context
   React.useEffect(() => {
