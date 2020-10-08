@@ -7,7 +7,7 @@ export default ({current, send, comments}) => {
     let comment = comments[0]
 
     return (
-        <div style={{display: 'flex'}} className="row pl-5 ">
+        <div onClick={()=>send('TOGGLE_COMMENTS')} style={{display: 'flex'}} className="row pl-5 ">
             <CommentAvatar url={comment.author_logo}/>
             <div className="row">
                 <p className="stone">{comment.author}</p>
