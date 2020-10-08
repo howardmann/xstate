@@ -3,21 +3,21 @@ import UpArrow from '../../images/UpArrow'
 import DownArrow from '../../images/DownArrow'
 import CommentPreview from './CommentPreview'
 import CommentExpanded from './CommentExpanded'
-import {findCommentsByIssueId} from '../../data-access/comments-db/index'
+// import {findCommentsByIssueId} from '../../data-access/comments-db/index'
 
-export default ({current, send, issue}) => {
-    const [comments, setComments] = React.useState({})
+export default ({current, send, issue, comments}) => {
+    // const [comments, setComments] = React.useState({})
     
-    const fetchComments = () => {
-        return findCommentsByIssueId(issue.id)
-            .then(data => {
-                setComments(data)
-            })
-    }
+    // const fetchComments = () => {
+    //     return findCommentsByIssueId(issue.id)
+    //         .then(data => {
+    //             setComments(data)
+    //         })
+    // }
     
-    React.useEffect(()=> {
-        fetchComments()
-    }, [])
+    // React.useEffect(()=> {
+    //     fetchComments()
+    // }, [])
 
     const commentCount = comments && (comments.length > 0) ? comments.length : '';
 

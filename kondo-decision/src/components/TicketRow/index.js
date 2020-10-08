@@ -26,7 +26,7 @@ const TicketRow = ({data, handleStatusChange}) => {
       {/* EXPAND/ HIDE CONTROLS */}
       <span style={{position: 'absolute', top: '5px', right: '5px'}}>
           {current.matches('issue.active') &&
-          <span className="fs-12 stone small p-0">HIDE <UpArrow/></span> 
+          <span className="fs-12 stone small p-0"><UpArrow/></span> 
           }                
       </span>
 

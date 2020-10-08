@@ -1,5 +1,5 @@
 import React from 'react'
-import truncateWords from '../../../util/truncateWords'
+import truncateWords from '../../util/truncateWords'
 import { send } from 'xstate'
 
 export default ({issue, send}) => (
