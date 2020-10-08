@@ -4,12 +4,14 @@ import FormPlaceholder from './FormPlaceholder'
 
 export default ({current, send}) => {
     return (
-        <div onClick={() => send('TOGGLE_COMMENTS')}>
+        <div>
             {current.matches('comments.expanded.formNew') &&
                 <FormNew current={current} send={send}/>
             }
             {current.matches('comments.expanded.formPlaceholder') && 
-                <FormPlaceholder current={current} send={send}/>
+                <div onClick={() => send('FOCUS')}> 
+                    <FormPlaceholder current={current} send={send}/>
+                </div>
             }                        
             <p>List of comments goes below here</p>
             

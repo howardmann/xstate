@@ -3,7 +3,7 @@ import CommentAvatar from './CommentAvatar'
 
 export default ({current, send}) => {
     return (
-        <div onClick={() => send('TOGGLE_COMMENTS')}>
+        <div>
             <div style={{display: 'flex'}} className="row pl-5">
                 <CommentAvatar/>
                 <p>Placeholder of first comment ok</p>

@@ -7,7 +7,7 @@ export default ({current, send}) => {
         <div style={{display: 'flex'}} className="row pl-5">
             <CommentAvatar/>
 
-            <textarea autoFocus placeholder="Add a comment..." style={{display: "flex", flexGrow: 1, alignItems: 'center', padding: '6px', resize: 'auto'}} width="100" className="border cursor">                
+            <textarea required autoFocus placeholder="Add a comment..." style={{display: "flex", flexGrow: 1, alignItems: 'center', padding: '6px', resize: 'auto'}} width="100" className="border cursor">                
             </textarea>            
         </div>
 
