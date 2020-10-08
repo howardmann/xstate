@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
 import IssuesBoard from './components/IssuesBoard'
-// import data from './db/issues'
 import {listIssues} from './data-access/issues-db'
-
+import {Helmet} from 'react-helmet'
 
 const App = () => (
     <HomePage />
@@ -28,6 +27,10 @@ function HomePage() {
 
   return (
     <div>
+      <Helmet>
+        <title>Kondo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      </Helmet>
       <div className="px-10 desktop-px-50 laptop-px-50" style={{backgroundColor: '#F5F5F5'}}>
         <div className="container">
           <div className="row flex items-center">
