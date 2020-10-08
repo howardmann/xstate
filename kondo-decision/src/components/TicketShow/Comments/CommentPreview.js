@@ -4,8 +4,7 @@ import CommentFirst from './CommentFirst'
 
 export default ({current, send}) => {
     return (
-        <div>
-            <p className="fs-16 bold mt-5 mb-10"><strong>Comments</strong></p>
+        <div onClick={() => send('TOGGLE_COMMENTS')}>
             {current.matches('comments.preview.formPlaceholder') &&
                 <FormPlaceholder current={current} send={send}/>
             }

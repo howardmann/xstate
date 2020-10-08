@@ -6,19 +6,19 @@ import UpArrow from '../../../images/UpArrow'
 
 export default ({issue, current, send}) => {
     return (
-        <div onClick={() => send('TOGGLE_DETAILS')}>
+        <div>
             {/* EXPAND/ HIDE CONTROLS */}
-            <span style={{position: 'absolute', top: '5px', right: '5px'}}>
+            <span onClick={() => send('TOGGLE_DETAILS')} style={{position: 'absolute', top: '5px', right: '5px'}}>
                 {current.matches('details.preview') && 
-                <DownArrow/>
+                <span className="fs-12 stone small p-0">SHOW <DownArrow/></span> 
                 }
                 {current.matches('details.expanded') &&
-                <UpArrow/>
+                <span className="fs-12 stone small p-0">HIDE <UpArrow/></span> 
                 }                
             </span>
             
             {current.matches('details.preview') &&
-                <TicketPreview issue={issue}/>
+                <TicketPreview issue={issue} send={send}/>
                 
             }
 

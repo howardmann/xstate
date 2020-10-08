@@ -83,10 +83,7 @@ const actionMachine = Machine({
       states: {
         preview: {
           on: {
-            TOGGLE_DETAILS: {
-              target: 'expanded',
-              actions: [send('HIDE_COMMENTS')]
-            }
+            TOGGLE_DETAILS: 'expanded'
           }
         },
         expanded: {

@@ -11,8 +11,11 @@ export default ({current, send}) => {
             </textarea>            
         </div>
 
-        <p onClick={() => send('SUBMIT_COMMENT')} className="right-align">SUBMIT</p>
-        <p onClick={() => send('CANCEL')} className="right-align">CANCEL</p>
+        {/* FORM ACTIONS */}
+        <div className="row right-align">
+            <a onClick={() => send('CANCEL')} className="btn btn-outline">CANCEL</a>
+            <a onClick={() => send('SUBMIT_COMMENT')} className="btn">COMMENT</a>
+        </div>
         </>
     )
 }
