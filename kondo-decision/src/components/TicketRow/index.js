@@ -50,10 +50,10 @@ const TicketRow = ({data, handleStatusChange}) => {
       
       </div>
         {/* XSTATE DEBUGGING */}
-        {/* <small>
+        <small>
           <p>current.value: {JSON.stringify(current.value)}</p>
           <p>current.context: {JSON.stringify(current.context)}</p>
-        </small>               */}
+        </small>              
 
 
 
