@@ -22,7 +22,7 @@ const TicketRow = ({data, handleStatusChange}) => {
 
 
   return (
-    <div className="row cursor border-2 border-platinum border-stone-hover rounded bg-white p-5 my-5">
+    <div key={issue.id} className="row cursor border-2 border-platinum border-stone-hover rounded bg-white p-5 my-5">
       {/* EXPAND/ HIDE CONTROLS */}
       <span style={{position: 'absolute', top: '5px', right: '5px'}}>
           {current.matches('issue.active') &&
@@ -46,7 +46,7 @@ const TicketRow = ({data, handleStatusChange}) => {
         <div onClick={() => send('TOGGLE')} className="col-12 ">
           {/* ISSUE NAME */}
           <div className="row">
-            <p className="fs-14 gray truncate">
+            <p className="fs-14 gray truncate pr-10">
               {issue.name}
             </p>            
           </div>
