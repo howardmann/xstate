@@ -12,7 +12,7 @@ const actionMachine = Machine({
   initial: 'actions',
   type: 'parallel',
   context: {
-    status: 'In Progress',
+    status: 'New',
     hasComments: false,
     category: 'previous'
   },
@@ -128,7 +128,7 @@ const actionMachine = Machine({
           }
         },
         expanded: {
-          initial: 'formPlaceholder',
+          initial: 'formNew',
           states: {
             formPlaceholder: {
               on: {
@@ -154,12 +154,35 @@ const actionMachine = Machine({
         HIDE_COMMENTS: 'comments.preview'
       }
     },
-    actions: {
-      initial: 'status',
+    email: {
+      initial: 'inactive',
       states: {
+        inactive: {
+          on: {
+            OPEN_EMAIL: 'active'
+          }
+        },
+        active: {
+          on: {
+            CLOSE_EMAIL: 'inactive',
+            SUBMIT_EMAIL: [{
+              target: '#machine.status.inProgress',
+              actions: [send('HIDE_EMAIL')],
+              cond: ctx => isNew(ctx) || isOnHold(ctx) || isNotDoing(ctx)
+            },{
+              actions: [send('HIDE_EMAIL')],
+              cond: ctx => isInProgress(ctx) || isResolved(ctx)
+            }]
+          }
+        }
+      },
+      on: {
+        HIDE_EMAIL: 'email.inactive'
+      }
+
+    },
         status: {
           initial: 'load',
-          entry: send('HIDE_ISSUE'),
           states: {
             load: {
               on: {
@@ -188,7 +211,9 @@ const actionMachine = Machine({
             },
             new: {
               on: {
-                APPROVE: '#machine.actions.email',
+                APPROVE: {
+                  actions: send('OPEN_EMAIL')
+                },
                 REJECT: {
                   target: 'notDoing',
                   actions: send('MARK_READ')
@@ -223,7 +248,7 @@ const actionMachine = Machine({
             },
             onHold: {
               on: {
-                APPROVE: '#machine.actions.email',
+                APPROVE: {actions: [send('OPEN_EMAIL')]},
                 REJECT: {
                   target: 'notDoing',
                   actions: send('MARK_READ')
@@ -235,7 +260,7 @@ const actionMachine = Machine({
             },
             notDoing: {
               on: {
-                APPROVE: '#machine.actions.email',
+                APPROVE: {actions: [send('OPEN_EMAIL')] },
                 HOLD: {
                   target: 'onHold',
                   actions: send('MARK_READ')
@@ -252,22 +277,8 @@ const actionMachine = Machine({
               })
             }
           }
-        },
-        email: {
-          entry: send('HIDE_ISSUE'),
-          on: {
-            CLOSE: 'status',
-            SUBMIT: {
-              target: 'status',
-              actions: [assign({
-                status: 'In Progress'
-              }), send('MARK_READ')]
-            }
-          }
         }
       }
-    }
-  }
 });
 
 

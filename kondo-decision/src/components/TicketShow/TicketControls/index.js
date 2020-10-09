@@ -10,23 +10,23 @@ import ResolvedControl from './controls/ResolvedControl'
 const TicketControls = ({current, send}) => {
     return (
         <>
-            {current.matches('actions.status.new') &&
+            {current.matches('status.new') &&
             <NewControl send={send}/> 
             }
 
-            {current.matches('actions.status.inProgress') &&
+            {current.matches('status.inProgress') &&
             <InProgressControl current={current} send={send}/>
             }
 
-            {current.matches('actions.status.onHold') &&
+            {current.matches('status.onHold') &&
             <OnHoldControl current={current} send={send}/>
             }
 
-            {current.matches('actions.status.notDoing') &&
+            {current.matches('status.notDoing') &&
             <NotDoingControl current={current} send={send}/>
             }
 
-            {current.matches('actions.status.resolved') &&
+            {current.matches('status.resolved') &&
             <ResolvedControl current={current} send={send}/>
             }
         </>

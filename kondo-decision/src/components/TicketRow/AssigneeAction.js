@@ -4,7 +4,7 @@ import ApproveButton from '../actions/ApproveButton'
 const AssigneeAction = ({issue, current, send}) => {
     return (
         <div>
-            {(current.matches('actions.status.new') || current.matches('actions.status.onHold') || current.matches('actions.status.notDoing'))
+            {(current.matches('status.new') || current.matches('status.onHold') || current.matches('status.notDoing'))
                 ?
                     <>
                         <div className="col-8 phone-col-4 truncate">

@@ -14,11 +14,11 @@ const EmailForm = ({issue, send}) => {
             <textarea class="width-100" cols="30" rows="5" placeholder="Prefill issue details with CTA link"></textarea>
             <div class="row">                                  
             <div className="col-2">
-                <button class="btn btn-outline" onClick={() => send('CLOSE')}>🔙</button>            
+                <button class="btn btn-outline" onClick={() => send('CLOSE_EMAIL')}>🔙</button>            
             </div>
             <div className="col-10 right-align">
                 <button class="btn btn-primary right-align" onClick={() => {
-                send('SUBMIT')
+                send('SUBMIT_EMAIL')
                 alert('📧 Email Sent')
                 }}>📧 SUBMIT</button>
             </div>                      

@@ -23,66 +23,66 @@ const TicketRow = ({data, handleStatusChange}) => {
 
   return (
     <div className={current.matches('issue.active') ? 'modal': null}>
-    <div key={issue.id} className="row cursor border-2 border-platinum border-stone-hover rounded bg-white p-5 my-5">
-      {/* EXPAND/ HIDE CONTROLS */}
-      <span style={{position: 'absolute', top: '5px', right: '5px'}}>
-          {current.matches('issue.active') &&
-          <span className="fs-12 stone small p-0"><UpArrow/></span> 
-          }                
-      </span>
+      <div key={issue.id} className="row cursor border-2 border-platinum border-stone-hover rounded bg-white p-5 my-5">
+        {/* EXPAND/ HIDE CONTROLS */}
+        <span style={{position: 'absolute', top: '5px', right: '5px'}}>
+            {current.matches('issue.active') &&
+            <span className="fs-12 stone small p-0"><UpArrow/></span> 
+            }                
+        </span>
 
-      {/* TICKET ROW */}
-      <div style={{display: 'flex'}}>
-        {/* LHS TICKET_ROW -> ASSIGNED LOGO + TICKET STATUS */}
-        <div onClick={() => send('TOGGLE')} style={{width: '88px', flexShrink: 0}}>
-          <div className="row">
-            <AssignedLogo issue={issue}/>
+        {/* TICKET ROW */}
+        <div style={{display: 'flex'}}>
+          {/* LHS TICKET_ROW -> ASSIGNED LOGO + TICKET STATUS */}
+          <div onClick={() => send('TOGGLE')} style={{width: '88px', flexShrink: 0}}>
+            <div className="row">
+              <AssignedLogo issue={issue}/>
+            </div>
+            <div className="row">
+              <TicketStatus issue={issue}/>
+            </div>          
           </div>
-          <div className="row">
-            <TicketStatus issue={issue}/>
-          </div>          
-        </div>
-        
-        {/* RHS TICKET_ROW -> ISSUE NAME, ASSIGNED, APPROVE BUTTON */}
-        <div onClick={() => send('TOGGLE')} className="col-12 ">
-          {/* ISSUE NAME */}
-          <div className="row">
-            <p className="fs-14 gray truncate pr-10">
-              {issue.name}
-            </p>            
+          
+          {/* RHS TICKET_ROW -> ISSUE NAME, ASSIGNED, APPROVE BUTTON */}
+          <div onClick={() => send('TOGGLE')} className="col-12 ">
+            {/* ISSUE NAME */}
+            <div className="row">
+              <p className="fs-14 gray truncate pr-10">
+                {issue.name}
+              </p>            
+            </div>
+          
+            {/* ASSIGNEE NAME & APPROVE ACTION for New, OnHold & NotDoing */}
+            <div className="row">
+              <AssigneeAction issue={issue} current={current} send={send}/>
+            </div>                      
           </div>
         
-          {/* ASSIGNEE NAME & APPROVE ACTION for New, OnHold & NotDoing */}
-          <div className="row">
-            <AssigneeAction issue={issue} current={current} send={send}/>
-          </div>                      
         </div>
-      
+          {/* XSTATE DEBUGGING */}
+          {/* <small>
+            <p>current.value: {JSON.stringify(current.value)}</p>
+            <p>current.context: {JSON.stringify(current.context)}</p>
+          </small>               */}
+
+          {/* TICKET SHOW */}
+          <div className="row">
+            {/* TicketShow */}
+            {current.matches('issue.active') &&
+              <div className="pt-5">
+                <TicketShow issue={issue} current={current} send={send}/>
+              </div>
+            }
+
+            {/* EmailForm */}
+            {current.matches('email.active') && 
+              <div className="pt-5">
+                <EmailForm issue={issue} send={send}/>
+              </div>
+            }
+          </div>
+
       </div>
-        {/* XSTATE DEBUGGING */}
-        {/* <small>
-          <p>current.value: {JSON.stringify(current.value)}</p>
-          <p>current.context: {JSON.stringify(current.context)}</p>
-        </small>               */}
-
-        {/* TICKET SHOW */}
-        <div className="row">
-          {/* TicketShow */}
-          {current.matches('issue.active') &&
-            <div className="pt-5">
-              <TicketShow issue={issue} current={current} send={send}/>
-            </div>
-          }
-
-          {/* EmailForm */}
-          {current.matches('actions.email') && 
-            <div className="pt-5">
-              <EmailForm issue={issue} send={send}/>
-            </div>
-          }
-        </div>
-
-    </div>
     </div>
   )
 }
