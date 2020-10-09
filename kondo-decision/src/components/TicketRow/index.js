@@ -7,7 +7,6 @@ import AssignedLogo from './AssignedLogo'
 import AssigneeAction from './AssigneeAction'
 import TicketShow from '../TicketShow'
 import EmailForm from '../EmailForm'
-import UpArrow from '../../images/UpArrow'
 
 const TicketRow = ({data, handleStatusChange}) => {  
   const issue = data
@@ -25,10 +24,10 @@ const TicketRow = ({data, handleStatusChange}) => {
     <div className={current.matches('issue.active') ? 'modal modal-padding': null}>
       <div key={issue.id} className={`row cursor border-2 border-platinum border-stone-hover rounded bg-white p-5 my-5 ${current.matches('issue.active') ? 'p-10' : null}`}>
         {/* EXPAND/ HIDE CONTROLS */}
-        <span style={{position: 'absolute', top: '5px', right: '5px'}}>
+        <span style={{position: 'absolute', top: '-13px', right: '-8px'}}>
             {current.matches('issue.active') &&
-            <span className="fs-12 stone small p-0"><UpArrow/></span> 
-            }                
+              <div onClick={() => send('TOGGLE')} className="close"></div>
+            }
         </span>
 
         {/* TICKET ROW */}
