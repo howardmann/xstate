@@ -13,7 +13,7 @@ export default ({current, send}) => {
 
         {/* FORM ACTIONS */}
         <div className="row right-align">
-            <a onClick={() => send('CANCEL')} className="btn btn-outline">CANCEL</a>
+            <a onClick={() => send('CANCEL')} className="btn btn-outline mr-10">CANCEL</a>
             <a onClick={() => send('SUBMIT_COMMENT')} className="btn">COMMENT</a>
         </div>
         </>

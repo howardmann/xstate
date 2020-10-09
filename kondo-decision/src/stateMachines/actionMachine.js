@@ -66,7 +66,7 @@ const actionMachine = Machine({
           on: {
             TOGGLE: {
               target: 'inactive',
-              actions: [send('HIDE_DETAILS'), send('HIDE_COMMENTS')]
+              actions: [send('HIDE_DETAILS'), send('HIDE_COMMENTS'), send('HIDE_EMAIL')]
             }
           }
         }
@@ -74,7 +74,7 @@ const actionMachine = Machine({
       on: {
         HIDE_ISSUE: {
           target: 'issue.inactive',
-          actions: [send('HIDE_DETAILS'), send('HIDE_COMMENTS')]
+          actions: [send('HIDE_DETAILS'), send('HIDE_COMMENTS'), send('HIDE_EMAIL')]
         }
       }
     },
