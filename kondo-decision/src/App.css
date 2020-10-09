@@ -9441,6 +9441,7 @@ hr.hr-2 {
   }
 }
 
+
 /* Backdrop */
 .modal {
   display: block; /* Hidden by default */
@@ -9451,8 +9452,21 @@ hr.hr-2 {
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  padding: 50px 8px 0px 8px;
   overflow: auto; 
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  transition: all 120ms ease-in-out;
+  background-color: rgba(0,0,0,0.3); /* Black w/ opacity */
+  transition: padding-top 120ms ease-in-out;
+}
+
+.modal-padding {
+  padding-top: 50px;  
+  padding-left: 14%;
+  padding-right: 14%;
+}
+
+@media (max-width: 767px) {
+  .modal-padding {
+    padding-top: 40px;      
+    padding-left: 4%;
+    padding-right: 4%;
+  }
 }

@@ -128,7 +128,7 @@ const actionMachine = Machine({
           }
         },
         expanded: {
-          initial: 'formNew',
+          initial: 'formPlaceholder',
           states: {
             formPlaceholder: {
               on: {

@@ -24,25 +24,25 @@ const TicketShow = ({issue, current, send}) => {
         <div>
             {/* Comments above details if exist */}
             {(comments.length > 0) &&
-                <div className="row my-5 border border-silver-hover rounded p-5">
+                <div className="row my-5 border border-silver-hover rounded px-10">
                     <Comments issue={issue} comments={comments} current={current} send={send}/>
                 </div>
             }
 
             {/* Ticket Details */}
-            <div className="row cursor border border-silver-hover rounded p-5">
+            <div className="row cursor border border-silver-hover rounded px-10">
                 <TicketDetails issue={issue} current={current} send={send}/>
             </div>            
 
             {/* Comments below details if exist */}
             {(comments.length === 0) &&
-                <div className="row my-5 border border-silver-hover rounded p-5">
+                <div className="row my-5 border border-silver-hover rounded px-10">
                     <Comments issue={issue} comments={comments} current={current} send={send}/>
                 </div>
             }
 
             {/* Ticket Controls */}
-            <div className="row my-5 border border-silver-hover rounded p-5">
+            <div className="row my-5 border border-silver-hover rounded px-10">
                 <TicketControls current={current} send={send}/>
             </div>              
       </div>

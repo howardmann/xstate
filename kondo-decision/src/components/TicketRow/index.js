@@ -22,8 +22,8 @@ const TicketRow = ({data, handleStatusChange}) => {
 
 
   return (
-    <div className={current.matches('issue.active') ? 'modal': null}>
-      <div key={issue.id} className="row cursor border-2 border-platinum border-stone-hover rounded bg-white p-5 my-5">
+    <div className={current.matches('issue.active') ? 'modal modal-padding': null}>
+      <div key={issue.id} className={`row cursor border-2 border-platinum border-stone-hover rounded bg-white p-5 my-5 ${current.matches('issue.active') ? 'p-10' : null}`}>
         {/* EXPAND/ HIDE CONTROLS */}
         <span style={{position: 'absolute', top: '5px', right: '5px'}}>
             {current.matches('issue.active') &&
@@ -32,7 +32,7 @@ const TicketRow = ({data, handleStatusChange}) => {
         </span>
 
         {/* TICKET ROW */}
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex'}} className={current.matches('issue.active') ? 'p-5' : null}>
           {/* LHS TICKET_ROW -> ASSIGNED LOGO + TICKET STATUS */}
           <div onClick={() => send('TOGGLE')} style={{width: '88px', flexShrink: 0}}>
             <div className="row">
@@ -56,8 +56,7 @@ const TicketRow = ({data, handleStatusChange}) => {
             <div className="row">
               <AssigneeAction issue={issue} current={current} send={send}/>
             </div>                      
-          </div>
-        
+          </div>        
         </div>
           {/* XSTATE DEBUGGING */}
           {/* <small>

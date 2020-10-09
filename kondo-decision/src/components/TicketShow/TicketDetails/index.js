@@ -6,7 +6,7 @@ import UpArrow from '../../../images/UpArrow'
 
 export default ({issue, current, send}) => {
     return (
-        <div>
+        <div className='pb-5'>
             {/* EXPAND/ HIDE CONTROLS */}
             <span onClick={() => send('TOGGLE_DETAILS')} style={{position: 'absolute', top: '5px', right: '5px'}}>
                 {current.matches('details.preview') && 
