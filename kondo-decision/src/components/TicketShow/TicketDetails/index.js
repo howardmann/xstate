@@ -10,7 +10,7 @@ export default ({issue, current, send}) => {
             {/* EXPAND/ HIDE CONTROLS */}
             <span onClick={() => send('TOGGLE_DETAILS')} style={{position: 'absolute', top: '5px', right: '5px'}}>
                 {current.matches('details.preview') && 
-                <span className="fs-12 stone small p-0">SHOW <DownArrow/></span> 
+                <span className="fs-12 stone small p-0"> <DownArrow/></span> 
                 }
                 {current.matches('details.expanded') &&
                 <span className="fs-12 stone small p-0">HIDE <UpArrow/></span> 
