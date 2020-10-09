@@ -5,7 +5,7 @@ const isInProgress = (ctx) => ctx.status === 'In Progress'
 const isResolved = (ctx) => ctx.status === 'Resolved'
 const isOnHold = (ctx) => ctx.status === 'On Hold'
 const isNotDoing = (ctx) => ctx.status === 'Not Doing'
-
+const markHasCommentsTrue = (ctx, evt) => ctx.hasComments = true
 
 const actionMachine = Machine({
   id: 'machine',
@@ -140,7 +140,7 @@ const actionMachine = Machine({
                 CANCEL: 'formPlaceholder',
                 SUBMIT_COMMENT: {
                   target: 'formPlaceholder',
-                  actions: (ctx, evt) => ctx.hasComments = true
+                  actions: [markHasCommentsTrue, send('MARK_READ')]
                 }
               }
             }
@@ -167,7 +167,7 @@ const actionMachine = Machine({
             CLOSE_EMAIL: 'inactive',
             SUBMIT_EMAIL: [{
               target: '#machine.status.inProgress',
-              actions: [send('HIDE_EMAIL')],
+              actions: [send('HIDE_EMAIL'), send('MARK_READ')],
               cond: ctx => isNew(ctx) || isOnHold(ctx) || isNotDoing(ctx)
             },{
               actions: [send('HIDE_EMAIL')],
