@@ -3,9 +3,16 @@ import UpArrow from '../../images/UpArrow'
 import DownArrow from '../../images/DownArrow'
 import CommentPreview from './CommentPreview'
 import CommentExpanded from './CommentExpanded'
+import {compareDesc} from 'date-fns'
+
+const sortByDate = (commentsArr) => {
+    return commentsArr.sort((a,b) => compareDesc(a.date, b.date))    
+}
+
 
 export default ({current, send, issue, comments, handleSubmitComment}) => {
     const commentCount = comments && (comments.length > 0) ? comments.length : '';
+    let sortedComments = sortByDate(comments)
 
     return (
         <div className="pb-10">
@@ -30,11 +37,11 @@ export default ({current, send, issue, comments, handleSubmitComment}) => {
 
 
             {current.matches('comments.preview') &&
-                <CommentPreview comments={comments} issue={issue} current={current} send={send}/>
+                <CommentPreview comments={sortedComments} issue={issue} current={current} send={send}/>
             }
 
             {current.matches('comments.expanded') &&
-                <CommentExpanded handleSubmitComment={handleSubmitComment} comments={comments} issue={issue} current={current} send={send}/>
+                <CommentExpanded handleSubmitComment={handleSubmitComment} comments={sortedComments} issue={issue} current={current} send={send}/>
             }
         </div>
     )
