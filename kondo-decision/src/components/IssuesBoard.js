@@ -42,7 +42,7 @@ const IssuesBoard = ({data}) => {
           {sortByStatus(issues).filter(el => el.category === 'inbox').map(issue => <TicketRow key={issue.id} data={issue} handleStatusChange={handleStatusChange}/>)}
           {!hasInbox() && 
           <div style={{margin: '15px', padding: '15px', textAlign: 'center'}}>
-            <p>✨ Nothing new for you ✨</p>
+            <p className="fs-18">✨ Nothing new for you ✨</p>
           </div>
             
           }
