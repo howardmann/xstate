@@ -5,15 +5,15 @@ const EmailForm = ({issue, send}) => {
 
     return (
         <div class="left-align p-5 border">
-            <h3 class="center">Send Email</h3>
+            <p className="stone fs-18 center">SEND EMAIL</p>
             <p>To:</p>
-            <p><input class="width-100" type="email" value={issue.email}/></p>
+            <p><input className="width-100 fs-16 border cursor" type="email" value={issue.email}/></p>
             <p>Cc:</p>
-            <p><input class="width-100" type="email" value="engineering@cim.io"/></p>
+            <p><input className="width-100 fs-16 border cursor" type="email" value="engineering@cim.io"/></p>
             <p>Subject:</p>
-            <p><input class="width-100" type="text" value={issue.name}/></p>
+            <p><input className="width-100 fs-16 border cursor" type="text" value={issue.name}/></p>
             <p>Body:</p>
-            <textarea value={emailForm} class="width-100" cols="30" rows="15">
+            <textarea value={emailForm} className="width-100 border cursor" cols="30" rows="15">
             </textarea>
             <div class="row right-align">                                  
                 <button class="btn btn-outline mr-10" onClick={() => send('CLOSE_EMAIL')}>CANCEL</button>            
