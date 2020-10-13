@@ -9502,3 +9502,8 @@ hr.hr-2 {
   opacity: 1; 
   cursor: pointer;
 }
+/* Inherit textarea */
+textarea {
+   font-family: inherit;
+   font-size: inherit;
+}

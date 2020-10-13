@@ -11,7 +11,7 @@ export default ({current, send, comments}) => {
             <CommentAvatar url={comment.author_logo}/>
             <div className="row">
                 <p className="stone">{comment.author}</p>
-                <p>{truncateWords(comment.comment,20)}</p>
+                <p>{truncateWords(comment.comment,15)}</p>
             </div>            
             
         </div>
