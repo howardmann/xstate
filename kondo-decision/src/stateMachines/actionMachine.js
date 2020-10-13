@@ -6,6 +6,7 @@ const isResolved = (ctx) => ctx.status === 'Resolved'
 const isOnHold = (ctx) => ctx.status === 'On Hold'
 const isNotDoing = (ctx) => ctx.status === 'Not Doing'
 const markHasCommentsTrue = (ctx, evt) => ctx.hasComments = true
+const clearComment = (ctx, evt) => ctx.comment = null
 
 const actionMachine = Machine({
   id: 'machine',
@@ -14,7 +15,8 @@ const actionMachine = Machine({
   context: {
     status: 'New',
     hasComments: false,
-    category: 'previous'
+    category: 'previous',
+    comment: null
   },
   states: {
     category: {
@@ -140,7 +142,13 @@ const actionMachine = Machine({
                 CANCEL: 'formPlaceholder',
                 SUBMIT_COMMENT: {
                   target: 'formPlaceholder',
-                  actions: [markHasCommentsTrue, send('MARK_READ')]
+                  actions: [markHasCommentsTrue, send('MARK_READ'),clearComment],
+                  cond: ctx => ctx.comment && ctx.comment.length > 0
+                },
+                UPDATE_COMMENT: {
+                  actions: assign({
+                    comment: (_ctx, evt) => evt.comment
+                  })
                 }
               }
             }

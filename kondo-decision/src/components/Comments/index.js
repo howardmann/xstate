@@ -4,7 +4,7 @@ import DownArrow from '../../images/DownArrow'
 import CommentPreview from './CommentPreview'
 import CommentExpanded from './CommentExpanded'
 
-export default ({current, send, issue, comments}) => {
+export default ({current, send, issue, comments, handleSubmitComment}) => {
     const commentCount = comments && (comments.length > 0) ? comments.length : '';
 
     return (
@@ -34,7 +34,7 @@ export default ({current, send, issue, comments}) => {
             }
 
             {current.matches('comments.expanded') &&
-                <CommentExpanded comments={comments} issue={issue} current={current} send={send}/>
+                <CommentExpanded handleSubmitComment={handleSubmitComment} comments={comments} issue={issue} current={current} send={send}/>
             }
         </div>
     )

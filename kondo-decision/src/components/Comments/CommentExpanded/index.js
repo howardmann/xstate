@@ -4,11 +4,11 @@ import FormPlaceholder from '../Form/FormPlaceholder'
 import CommentList from '../CommentList'
 
 
-export default ({current, send, issue, comments}) => {
+export default ({current, send, issue, comments, handleSubmitComment}) => {
     return (
         <div>
             {current.matches('comments.expanded.formNew') &&
-                <FormNew current={current} send={send}/>
+                <FormNew handleSubmitComment={handleSubmitComment} issue={issue} current={current} send={send}/>
             }
             {current.matches('comments.expanded.formPlaceholder') && 
                 <div onClick={() => send('FOCUS')}> 

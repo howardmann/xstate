@@ -3,8 +3,7 @@ import React from 'react';
 import TicketDetails from './TicketDetails'
 import TicketControls from './TicketControls'
 import Comments from '../Comments'
-import {findCommentsByIssueId} from '../../data-access/comments-db/index'
-
+import {findCommentsByIssueId, postComment} from '../../data-access/comments-db/index'
 
 const TicketShow = ({issue, current, send}) => {
     const [comments, setComments] = React.useState({})
@@ -16,6 +15,12 @@ const TicketShow = ({issue, current, send}) => {
             })
     }
 
+    // comment update
+    const handleSubmitComment = ({issue_id, author, author_logo, comment}) => {
+        return postComment({issue_id, author, author_logo, comment})
+            .then(() => fetchComments())
+    }
+
     React.useEffect(() => {
         fetchComments()
     }, [])
@@ -25,7 +30,7 @@ const TicketShow = ({issue, current, send}) => {
             {/* Comments above details if exist */}
             {(comments.length > 0) &&
                 <div className="row my-5 border border-silver-hover rounded px-10">
-                    <Comments issue={issue} comments={comments} current={current} send={send}/>
+                    <Comments handleSubmitComment={handleSubmitComment} issue={issue} comments={comments} current={current} send={send}/>
                 </div>
             }
 
@@ -37,7 +42,7 @@ const TicketShow = ({issue, current, send}) => {
             {/* Comments below details if exist */}
             {(comments.length === 0) &&
                 <div className="row my-5 border border-silver-hover rounded px-10">
-                    <Comments issue={issue} comments={comments} current={current} send={send}/>
+                    <Comments handleSubmitComment={handleSubmitComment} issue={issue} comments={comments} current={current} send={send}/>
                 </div>
             }
 
