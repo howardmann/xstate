@@ -3,7 +3,10 @@ import React from 'react';
 import TicketDetails from './TicketDetails'
 import TicketControls from './TicketControls'
 import Comments from '../Comments'
-import {findCommentsByIssueId, postComment} from '../../data-access/comments-db/index'
+import findCommentsByIssueId from '../../data-access/comments-db/findCommentsByIssueId'
+import postComment from '../../data-access/comments-db/postComment'
+// import {findCommentsByIssueId, postComment} from '../../data-access/comments-db/index'
+
 
 const TicketShow = ({issue, current, send}) => {
     const [comments, setComments] = React.useState({})

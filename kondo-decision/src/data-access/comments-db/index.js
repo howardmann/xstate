@@ -13,7 +13,7 @@ let findCommentsByIssueId = (id) => {
 
 let postComment = ({comment, issue_id, author, author_logo}) => {
     let newComment = {
-        ["record_id"]: Math.random().toString(),
+        ["record_id"]: Math.random(),
         ["record_id (from issues)"]: issue_id,
         ["Contact"]: author,
         ["kondo_contact_logo"]: author_logo,
