@@ -1,6 +1,7 @@
-import React from 'react';
+import React from 'react'
 import TicketRow from './TicketRow'
-import {sortBy} from 'lodash';
+import {sortBy} from 'lodash'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const sortByStatus = (data) => {
   const sortRank = {
@@ -18,7 +19,8 @@ const sortByStatus = (data) => {
 
 const IssuesBoard = ({data}) => {  
   // React Issue State
-  const [issues, setIssues] = React.useState(data)
+  // const [issues, setIssues] = React.useState(data)
+  const [issues, setIssues] = useLocalStorage('issues', data)
   
   const handleStatusChange = ({id, status, category}) => {
     setIssues(
@@ -43,8 +45,7 @@ const IssuesBoard = ({data}) => {
           {!hasInbox() && 
           <div style={{margin: '15px', padding: '15px', textAlign: 'center'}}>
             <p className="fs-18">✨ Nothing new for you ✨</p>
-          </div>
-            
+          </div>            
           }
       </div>
       <hr/>
