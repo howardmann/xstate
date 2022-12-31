@@ -10,7 +10,7 @@
     "notyf": "^3.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "0.9.x",
+    "react-scripts": "5.0.x",
     "react-star-rating-component": "^1.4.1",
     "styled-components": "^5.1.0",
     "xstate": "^4.9.1"
